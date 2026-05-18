@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>생물다양성 암기 비행기</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons for Beautiful UI -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght=400;700&family=Nanum+Gothic:wght=400;700;800&display=swap');
+    
+    .font-cute {
+      font-family: 'Gaegu', cursive;
+    }
+    .font-main {
+      font-family: 'Nanum Gothic', sans-serif;
+    }
+    
+    /* 애니메이션 효과 */
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(3deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+    .floating-plane {
+      animation: float 4s ease-in-out infinite;
+    }
+    
+    /* 탭 전환 트랜지션 */
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-blue-50 to-green-50 min-h-screen font-main text-gray-800">
+
+  <!-- 상단 네비게이션 헤더 -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-paper-plane text-blue-500 text-2xl floating-plane"></i>
+        <h1 class="text-xl md:text-2xl font-extrabold text-blue-600 tracking-wide font-cute">생물다양성 암기 비행기✈️</h1>
+      </div>
+      <div class="text-xs md:text-sm font-semibold bg-green-100 text-green-800 px-3 py-1 rounded-full">
+        초등/중등 과학 필수 암기!
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 pb-24">
+    
+    <!-- 1. 앱 인트로 / 가이드 요약 -->
+    <section class="bg-white rounded-3xl p-6 shadow-sm border border-blue-100 mb-6 relative overflow-hidden">
+      <div class="absolute right-4 top-4 opacity-10 text-9xl text-blue-300">
+        <i class="fa-solid fa-seedling"></i>
+      </div>
+      <h2 class="text-2xl font-cute font-bold text-gray-800 mb-2 flex items-center gap-2">
+        <span class="text-2xl">🌱</span> "떴다 떴다 비행기" 정밀 가사 암기법!
+      </h2>
+      <p class="text-gray-600 text-sm md:text-base leading-relaxed">
+        새롭게 편곡된 <strong>박자 매칭 가사</strong>로 즐겁게 노래 부르고, 우측의 <strong>초성 퀴즈형 교과 핵심 정리</strong>와 <strong>실전 연습</strong>을 활용해 시험 전에 완벽하게 머릿속에 기억해 보세요!
+      </p>
+    </section>
+
+    <!-- 2. 탭 메뉴 구성 (3개 탭으로 구성) -->
+    <div class="grid grid-cols-3 gap-1.5 mb-6">
+      <button onclick="switchTab('song')" id="btn-tab-song" class="tab-btn active bg-blue-500 text-white font-bold py-3 px-1 rounded-2xl shadow-md transition-all text-center text-xs sm:text-sm md:text-base">
+        <i class="fa-solid fa-music mb-1 block md:inline md:mr-1"></i> 암기송 부르기
+      </button>
+      <button onclick="switchTab('study')" id="btn-tab-study" class="tab-btn bg-white hover:bg-gray-100 text-gray-700 font-bold py-3 px-1 rounded-2xl shadow-sm transition-all text-center text-xs sm:text-sm md:text-base border border-gray-200">
+        <i class="fa-solid fa-book-open mb-1 block md:inline md:mr-1"></i> 교과 핵심 (키워드)
+      </button>
+      <button onclick="switchTab('practice')" id="btn-tab-practice" class="tab-btn bg-white hover:bg-gray-100 text-gray-700 font-bold py-3 px-1 rounded-2xl shadow-sm transition-all text-center text-xs sm:text-sm md:text-base border border-gray-200">
+        <i class="fa-solid fa-graduation-cap mb-1 block md:inline md:mr-1"></i> 실전 연습 (전체)
+      </button>
+    </div>
+
+    <!-- ==================== TAB 1: 암기송 부르기 ==================== -->
+    <section id="tab-song" class="tab-content active space-y-6">
+      
+      <!-- 플레이 컨트롤러 (전체 오디오 연주기) -->
+      <div class="bg-blue-600 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl">
+          <i class="fa-solid fa-music"></i>
+        </div>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span class="bg-blue-500 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">Song Mode</span>
+            <h3 class="text-xl md:text-2xl font-bold mt-2">정밀 음정/가사 튜닝 완료!</h3>
+            <p class="text-blue-100 text-sm mt-1">원하는 마디를 클릭하거나 전체 반주를 재생해 노래를 익혀보세요 🎹</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="playFullSong()" class="bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold px-4 py-2 rounded-xl flex items-center gap-2 transition-all shadow-md">
+              <i class="fa-solid fa-circle-play"></i> 전체 반주 듣기
+            </button>
+            <button onclick="stopSound()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold px-4 py-2 rounded-xl flex items-center gap-2 transition-all">
+              <i class="fa-solid fa-circle-stop"></i> 정지
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 절 선택 컨트롤 (1, 2, 3절 단독 연주 버튼 포함) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- 1절 카드 -->
+        <div class="bg-white rounded-3xl p-6 border-2 border-emerald-400 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-3 py-1 rounded-full">1절 : 다양성 필요성</span>
+              <button onclick="playMelody(1)" class="text-emerald-500 hover:text-emerald-700 transition-colors" title="1절 멜로디만 듣기">
+                <i class="fa-solid fa-volume-high text-xl"></i>
+              </button>
+            </div>
+            
+            <div class="space-y-4 font-cute text-xl">
+              <div class="p-2 rounded-lg hover:bg-emerald-50 cursor-pointer transition-colors" onclick="playSingleLine([64, 62, 60, 62, 64, 64, 64], [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8], ['다','양','해','야','안','정','돼'])">
+                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
+                  <span>미레도레 / 미미미-</span>
+                  <i class="fa-solid fa-play text-[10px]"></i>
+                </div>
+                <p class="font-bold text-emerald-600">다-양-해-야 / 안-정-돼-</p>
+              </div>
+              <div class="p-2 rounded-lg hover:bg-emerald-50 cursor-pointer transition-colors" onclick="playSingleLine([62, 62, 62, 64, 64, 64], [0.4, 0.4, 0.8, 0.4, 0.4, 0.8], ['원','료','와','건','강','줘'])">
+                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
+                  <span>레레레- / 미미미-</span>
+                  <i class="fa-solid fa-play text-[10px]"></i>
+                </div>
+                <p class="font-bold text-emerald-600">원-료-와- / 건-강-줘-</p>
+              </div>
+              <div class="p-2 rounded-lg hover:bg-emerald-50 cursor-pointer transition-colors" onclick="playSingleLine([64, 62, 60, 62, 64, 64, 64], [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8], ['구','성','원','들','모','두','다'])">
+                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
+                  <span>미레도레 / 미미미-</span>
+                  <i class="fa-solid fa-play text-[10px]"></i>
+                </div>
+                <p class="font-bold text-emerald-600">구-성-원-들 / 모-두-다-</p>
+              </div>
+              <div class="p-2 rounded-lg hover:bg-emerald-50 cursor-pointer transition-colors" onclick="playSingleLine([62, 62, 64, 62, 60], [0.4, 0.4, 0.4, 0.4, 0.8], ['자','체','로','소','중'])">
+                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
+                  <span>레레 / 미레도-</span>
+                  <i class="fa-solid fa-play text-[10px]"></i>
+                </div>
+                <p class="font-bold text-emerald-600">자-체- / 로-소-중-</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-gray-100 text-xs text-gray-500 font-sans">
+            💡 생물다양성이 가질 수 있는 자원 및 생태학적 가치와 의의
+          </div>
+        </div>
+
+        <!-- 2절 카드 -->
+        <div class="bg-white rounded-3xl p-6 border-2 border-purple-400 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-purple-100 text-purple-800 text-xs font-extrabold px-3 py-1 rounded-full">2절 : 사회적 노력</span>
+              <button onclick="playMelody(2)" class="text-purple-500 hover:text-purple-700 transition-colors" title="2절 멜로디만 듣기">
+                <i class="fa-solid fa-volume-high text-xl"></i>
+              </button>
+            </div>
+            
+            <div class="space-y-4 font-cute text-xl">
+              <div class="p-2 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors" onclick="playSingleLine([64, 62, 60, 62, 64, 64, 64], [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8], ['생','태','통','로','만','들','고'])">
+                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
+                  <span>미레도레 / 미미미-</span>
+                  <i class="fa-solid fa-play text-[10px]"></i>
+                </div>
+                <p class="font-bold text-purple-600">생-태-통-로 / 만-들-고-</p>
+              </div>
+              <!-- 보호구역 지정해: [레레]레레- 미미미- -->
+              <div class="p-2 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors" onclick="playSingleLine([62, 62, 62, 62, 64, 64, 64], [0.2, 0.2, 0.4, 0.8, 0.4, 0.4, 0.8], ['보','호','구','역','지','정','해'])">
+                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
+                  <span>[레레]레레- / 미미미-</span>
+                  <i class="fa-solid fa-play text-[10px]"></i>
+                </div>
+                <p class="font-bold text-purple-600">보-호-구-역 / 지-정-해-</p>
+              </div>
+              <!-- 멸종위기생물 복원해: [미미][미레] 도레 미미미- -->
+              <div class="p-2 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors" onclick="playSingleLine([64, 64, 64, 62, 60, 62, 64, 64, 64], [0.2, 0.2, 0.2, 0.2, 0.4, 0.4, 0.4, 0.4, 0.8], ['멸','종','위','기','생','물','복','원','해'])">
+                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
+                  <span>[미미][미레]도레 / 미미미-</span>
+                  <i class="fa-solid fa-play text-[10px]"></i>
+                </div>
+                <p class="font-bold text-purple-600">멸-종-위-기-생-물 / 복-원-해-</p>
+              </div>
+              <div class="p-2 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors" onclick="playSingleLine([62, 62, 64, 62, 60], [0.4, 0.4, 0.4, 0.4, 0.8], ['캠','페','인','하','자'])">
+                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
+                  <span>레레 / 미레도-</span>
+                  <i class="fa-solid fa-play text-[10px]"></i>
+                </div>
+                <p class="font-bold text-purple-600">캠-페- / 인-하-자-</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-gray-100 text-xs text-gray-500 font-sans">
+            💡 로드킬 방지를 위한 생태통로 및 멸종위기 구호 정책 매핑
+          </div>
+        </div>
+
+        <!-- 3절 카드 -->
+        <div class="bg-white rounded-3xl p-6 border-2 border-orange-400 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-orange-100 text-orange-800 text-xs font-extrabold px-3 py-1 rounded-full">3절 : 개인적 실천</span>
+              <button onclick="playMelody(3)" class="text-orange-500 hover:text-orange-700 transition-colors" title="3절 멜로디만 듣기">
+                <i class="fa-solid fa-volume-high text-xl"></i>
+              </button>
+            </div>
+            
+            <div class="space-y-4 font-cute text-xl">
+              <div class="p-2 rounded-lg hover:bg-orange-50 cursor-pointer transition-colors" onclick="playSingleLine([64, 62, 60, 62, 64, 64, 64], [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8], ['자','연','훼','손','안','하','고'])">
+                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
+                  <span>미레도레 / 미미미-</span>
+                  <i class="fa-solid fa-play text-[10px]"></i>
+                </div>
+                <p class="font-bold text-orange-600">자-연-훼-손 / 안-하-고-</p>
+              </div>
+              <!-- 재활용품 분리배출: [레레]레레-[미미]미미- -->
+              <div class="p-2 rounded-lg hover:bg-orange-50 cursor-pointer transition-colors" onclick="playSingleLine([62, 62, 62, 62, 64, 64, 64, 64], [0.2, 0.2, 0.4, 0.8, 0.2, 0.2, 0.4, 0.8], ['재','활','용','품','분','리','배','출'])">
+                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
+                  <span>[레레]레레- / [미미]미미-</span>
+                  <i class="fa-solid fa-play text-[10px]"></i>
+                </div>
+                <p class="font-bold text-orange-600">재-활-용-품- / 분-리-배-출-</p>
+              </div>
+              <div class="p-2 rounded-lg hover:bg-orange-50 cursor-pointer transition-colors" onclick="playSingleLine([64, 62, 60, 62, 64, 64, 64], [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8], ['외','래','종','발','견','하','면'])">
+                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
+                  <span>미레도레 / 미미미-</span>
+                  <i class="fa-solid fa-play text-[10px]"></i>
+                </div>
+                <p class="font-bold text-orange-600">외-래-종-발 / 견-하-면-</p>
+              </div>
+              <div class="p-2 rounded-lg hover:bg-orange-50 cursor-pointer transition-colors" onclick="playSingleLine([62, 62, 64, 62, 60], [0.4, 0.4, 0.4, 0.4, 0.8], ['기','관','에','신','고'])">
+                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
+                  <span>레레 / 미레도-</span>
+                  <i class="fa-solid fa-play text-[10px]"></i>
+                </div>
+                <p class="font-bold text-orange-600">기-관- / 에-신-고-</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-gray-100 text-xs text-gray-500 font-sans">
+            💡 일상속 분리배출 요령 및 위해 외래종 전파 제한 실천 행동
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 음표 비주얼라이저 -->
+      <div class="bg-gray-900 rounded-3xl p-6 text-white shadow-md flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-4 h-4 bg-red-500 rounded-full animate-ping font-sans"></div>
+          <div>
+            <h4 class="font-bold text-sm text-gray-400 font-sans">실시간 음표 매칭 플레이어</h4>
+            <div id="playing-lyric" class="text-2xl font-bold font-cute text-yellow-300 mt-1">구절을 누르거나 전체 재생을 눌러보세요!</div>
+          </div>
+        </div>
+        <div class="flex gap-1" id="visualizer-bars">
+          <span class="w-1 h-8 bg-blue-400 rounded-full inline-block transition-all duration-100"></span>
+          <span class="w-1 h-12 bg-green-400 rounded-full inline-block transition-all duration-100"></span>
+          <span class="w-1 h-6 bg-yellow-400 rounded-full inline-block transition-all duration-100"></span>
+          <span class="w-1 h-10 bg-red-400 rounded-full inline-block transition-all duration-100"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: 교과 핵심 정리 (핵심 키워드 초성 퀴즈형) ==================== -->
+    <section id="tab-study" class="tab-content space-y-6">
+      
+      <!-- 퀴즈 일괄 조작 헤더 -->
+      <div class="bg-white rounded-3xl p-5 shadow-sm border border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div>
+          <h4 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-spell-check text-blue-500 mr-1"></i> 핵심 키워드 가리기 학습</h4>
+          <p class="text-gray-500 text-xs sm:text-sm mt-1">교과문장의 중요한 주 핵심 단어들만 초성으로 가렸습니다.</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="revealAllBlanks()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-4 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-sm">
+            전체 정답 보기
+          </button>
+          <button onclick="hideAllBlanks()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold px-4 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-sm">
+            전체 초성 가리기
+          </button>
+        </div>
+      </div>
+
+      <!-- 1단원 정보 -->
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-emerald-100 flex flex-col md:flex-row gap-6 items-start md:items-center">
+        <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl shrink-0">
+          <i class="fa-solid fa-seedling"></i>
+        </div>
+        <div class="space-y-3 w-full">
+          <div class="flex items-center gap-2">
+            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-1 rounded font-sans">단원 1</span>
+            <h3 class="text-lg font-bold text-gray-800">1. 생물다양성 보전의 필요성</h3>
+          </div>
+          <ul class="list-none space-y-3 text-gray-700 text-sm md:text-base leading-relaxed">
+            <li class="flex flex-wrap items-center gap-1">
+              • 생물다양성이 클수록 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="생태계" data-chosung="ㅅ,ㅌ,ㄱ"></span>가 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="안정" data-chosung="ㅇ,ㅈ"></span>적으로 유지된다.
+            </li>
+            <li class="flex flex-wrap items-center gap-1">
+              • 생물에서 여러 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="원료" data-chosung="ㅇ,ㄹ"></span>를 얻고, 자연에서 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="건강" data-chosung="ㄱ,ㄱ"></span>을 얻는다.
+            </li>
+            <li class="flex flex-wrap items-center gap-1">
+              • 모든 생물은 생태계 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="구성원" data-chosung="ㄱ,ㅅ,ㅇ"></span>으로서 그 자체로 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="소중" data-chosung="ㅅ,ㅈ"></span>하다.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2단원 정보 -->
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-purple-100 flex flex-col md:flex-row gap-6 items-start md:items-center">
+        <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center text-2xl shrink-0">
+          <i class="fa-solid fa-building-columns"></i>
+        </div>
+        <div class="space-y-3 w-full">
+          <div class="flex items-center gap-2">
+            <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1 rounded font-sans">단원 2</span>
+            <h3 class="text-lg font-bold text-gray-800">2. 생물다양성 유지를 위한 사회적 차원의 노력</h3>
+          </div>
+          <ul class="list-none space-y-3 text-gray-700 text-sm md:text-base leading-relaxed">
+            <li class="flex flex-wrap items-center gap-1">
+              • 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="생태통로" data-chosung="ㅅ,ㅌ,ㅌ,ㄹ"></span>를 건설하거나 국립공원같은 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="보호구역" data-chosung="ㅂ,ㅎ,ㄱ,ㅇ"></span>을 지정한다.
+            </li>
+            <li class="flex flex-wrap items-center gap-1">
+              • 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="멸종 위기 생물" data-chosung="ㅁ,ㅈ, ,ㅇ,ㄱ, ,ㅅ,ㅁ"></span>을 지정하고 서식지를 보호하며 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="복원" data-chosung="ㅂ,ㅇ"></span> 사업을 진행한다.
+            </li>
+            <li class="flex flex-wrap items-center gap-1">
+              • 생물다양성을 유지하는 방법을 소개하고 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="캠페인" data-chosung="ㅋ,ㅍ,ㅇ"></span> 활동을 장려한다.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3단원 정보 -->
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-orange-100 flex flex-col md:flex-row gap-6 items-start md:items-center">
+        <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center text-2xl shrink-0">
+          <i class="fa-solid fa-person-running"></i>
+        </div>
+        <div class="space-y-3 w-full">
+          <div class="flex items-center gap-2">
+            <span class="bg-orange-100 text-orange-800 text-xs font-bold px-2 py-1 rounded font-sans">단원 3</span>
+            <h3 class="text-lg font-bold text-gray-800">3. 생물다양성 유지를 위한 개인적 차원의 노력</h3>
+          </div>
+          <ul class="list-none space-y-3 text-gray-700 text-sm md:text-base leading-relaxed">
+            <li class="flex flex-wrap items-center gap-1">
+              • 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="자연" data-chosung="ㅈ,ㅇ"></span>을 훼손하지 않고 보호한다.
+            </li>
+            <li class="flex flex-wrap items-center gap-1">
+              • 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="재활용품" data-chosung="ㅈ,ㅎ,ㅇ,ㅍ"></span>을 올바르게 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="분리배출" data-chosung="ㅂ,ㄹ,ㅂ,ㅊ"></span>하여 환경오염을 줄인다.
+            </li>
+            <li class="flex flex-wrap items-center gap-1">
+              • 생활에서 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="외래종" data-chosung="ㅇ,ㄹ,ㅈ"></span>을 발견하면 관련 기관에 
+              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="신고" data-chosung="ㅅ,ㄱ"></span>한다.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== TAB 3: 실전 연습 (전체 초성 퀴즈형 - 조사 및 연결/서술 어미 노출 적용) ==================== -->
+    <section id="tab-practice" class="tab-content space-y-6">
+      
+      <!-- 실전 연습 일괄 조작 헤더 -->
+      <div class="bg-white rounded-3xl p-5 shadow-sm border border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div>
+          <h4 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-graduation-cap text-orange-500 mr-1"></i> 실전 연습 (전체 초성 모드)</h4>
+          <p class="text-gray-500 text-xs sm:text-sm mt-1">조사 및 연결 어미(하거나, 한다, 하여, 하면, 하고 등)를 제외한 단어들을 가렸습니다.</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="revealAllPractice()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-sm">
+            전체 정답 보기
+          </button>
+          <button onclick="hideAllPractice()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold px-4 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-sm">
+            전체 초성 가리기
+          </button>
+        </div>
+      </div>
+
+      <!-- 1단원 전체 초성 퀴즈 -->
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-emerald-100 flex flex-col md:flex-row gap-6 items-start md:items-center">
+        <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl shrink-0">
+          <i class="fa-solid fa-seedling"></i>
+        </div>
+        <div class="space-y-3 w-full">
+          <div class="flex items-center gap-2">
+            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-1 rounded font-sans">실전 1</span>
+            <h3 class="text-lg font-bold text-gray-800">1. 생물다양성 보전의 필요성</h3>
+          </div>
+          <ul class="list-none space-y-3 text-gray-700 text-sm md:text-base leading-relaxed">
+            <li class="flex flex-wrap items-center gap-1">
+              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생물다양성" data-chosung="ㅅ,ㅁ,ㄷ,ㅇ,ㅅ"></span>이 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="클" data-chosung="ㅋ"></span>수록 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생태계" data-chosung="ㅅ,ㅌ,ㄱ"></span>가 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="안정" data-chosung="ㅇ,ㅈ"></span>적으로 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="유지" data-chosung="ㅇ,ㅈ"></span>된다.
+            </li>
+            <li class="flex flex-wrap items-center gap-1">
+              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생물" data-chosung="ㅅ,ㅁ"></span>에서 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="여러" data-chosung="ㅇ,ㄹ"></span> 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="원료" data-chosung="ㅇ,ㄹ"></span>를 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="얻" data-chosung="ㅇ"></span>고, 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="자연" data-chosung="ㅈ,ㅇ"></span>에서 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="건강" data-chosung="ㄱ,ㄱ"></span>을 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="얻" data-chosung="ㅇ"></span>는다.
+            </li>
+            <li class="flex flex-wrap items-center gap-1">
+              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="모든" data-chosung="ㅁ,ㄷ"></span> 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생물" data-chosung="ㅅ,ㅁ"></span>은 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생태계" data-chosung="ㅅ,ㅌ,ㄱ"></span> 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="구성원" data-chosung="ㄱ,ㅅ,ㅇ"></span>으로서 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="그" data-chosung="ㄱ"></span> 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="자체" data-chosung="ㅈ,ㅊ"></span>로 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="소중" data-chosung="ㅅ,ㅈ"></span>하다.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2단원 전체 초성 퀴즈 -->
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-purple-100 flex flex-col md:flex-row gap-6 items-start md:items-center">
+        <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center text-2xl shrink-0">
+          <i class="fa-solid fa-building-columns"></i>
+        </div>
+        <div class="space-y-3 w-full">
+          <div class="flex items-center gap-2">
+            <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1 rounded font-sans">실전 2</span>
+            <h3 class="text-lg font-bold text-gray-800">2. 생물다양성 유지를 위한 사회적 차원의 노력</h3>
+          </div>
+          <ul class="list-none space-y-3 text-gray-700 text-sm md:text-base leading-relaxed">
+            <li class="flex flex-wrap items-center gap-1">
+              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생태통로" data-chosung="ㅅ,ㅌ,ㅌ,ㄹ"></span>를 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="건설" data-chosung="ㄱ,ㅅ"></span>하거나 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="국립공원" data-chosung="ㄱ,ㄹ,ㄱ,ㅇ"></span>같은 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="보호구역" data-chosung="ㅂ,ㅎ,ㄱ,ㅇ"></span>을 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="지정" data-chosung="ㅈ,ㅈ"></span>한다.
+            </li>
+            <li class="flex flex-wrap items-center gap-1">
+              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="멸종" data-chosung="ㅁ,ㅈ"></span> 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="위기" data-chosung="ㅇ,ㄱ"></span> 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생물" data-chosung="ㅅ,ㅁ"></span>을 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="지정" data-chosung="ㅈ,ㅈ"></span>하고 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="서식지" data-chosung="ㅅ,ㅅ,ㅈ"></span>를 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="보호" data-chosung="ㅂ,ㅎ"></span>하며 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="복원" data-chosung="ㅂ,ㅇ"></span> 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="사업" data-chosung="ㅅ,ㅇ"></span>을 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="진행" data-chosung="ㅈ,ㅎ"></span>한다.
+            </li>
+            <li class="flex flex-wrap items-center gap-1">
+              • 생물다양성을 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="유지" data-chosung="ㅇ,ㅈ"></span>하는 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="방법" data-chosung="ㅂ,ㅂ"></span>을 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="소개" data-chosung="ㅅ,ㄱ"></span>하고 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="캠페인" data-chosung="ㅋ,ㅍ,ㅇ"></span> 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="활동" data-chosung="ㅎ,ㄷ"></span>을 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="장려" data-chosung="ㅈ,ㄹ"></span>한다.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3단원 전체 초성 퀴즈 -->
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-orange-100 flex flex-col md:flex-row gap-6 items-start md:items-center">
+        <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center text-2xl shrink-0">
+          <i class="fa-solid fa-person-running"></i>
+        </div>
+        <div class="space-y-3 w-full">
+          <div class="flex items-center gap-2">
+            <span class="bg-orange-100 text-orange-800 text-xs font-bold px-2 py-1 rounded font-sans">실전 3</span>
+            <h3 class="text-lg font-bold text-gray-800">3. 생물다양성 유지를 위한 개인적 차원의 노력</h3>
+          </div>
+          <ul class="list-none space-y-3 text-gray-700 text-sm md:text-base leading-relaxed">
+            <li class="flex flex-wrap items-center gap-1">
+              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="자연" data-chosung="ㅈ,ㅇ"></span>을 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="훼손" data-chosung="ㅎ,ㅅ"></span>하지 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="않" data-chosung="ㅇ"></span>고 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="보호" data-chosung="ㅂ,ㅎ"></span>한다.
+            </li>
+            <li class="flex flex-wrap items-center gap-1">
+              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="재활용품" data-chosung="ㅈ,ㅎ,ㅇ,ㅍ"></span>을 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="올바르게" data-chosung="ㅇ,ㅂ,ㄹ,ㄱ"></span> 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="분리배출" data-chosung="ㅂ,ㄹ,ㅂ,ㅊ"></span>하여 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="환경오염" data-chosung="ㅎ,ㄱ,ㅇ,ㅇ"></span>을 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="줄" data-chosung="ㅈ"></span>인다.
+            </li>
+            <li class="flex flex-wrap items-center gap-1">
+              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생활" data-chosung="ㅅ,ㅎ"></span>에서 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="외래종" data-chosung="ㅇ,ㄹ,ㅈ"></span>을 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="발견" data-chosung="ㅂ,ㄱ"></span>하면 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="관련" data-chosung="ㄱ,ㄹ"></span> 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="기관" data-chosung="ㄱ,ㄱ"></span>에 
+              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="신고" data-chosung="ㅅ,ㄱ"></span>한다.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- 하단 퀵 모바일 내비게이션 -->
+  <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-2xl z-50 md:hidden">
+    <div class="flex justify-around items-center py-2">
+      <button onclick="switchTab('song')" class="mobile-nav-btn text-blue-500 flex flex-col items-center gap-1">
+        <i class="fa-solid fa-music text-xl"></i>
+        <span class="text-xs font-bold">암기송</span>
+      </button>
+      <button onclick="switchTab('study')" class="mobile-nav-btn text-gray-400 flex flex-col items-center gap-1">
+        <i class="fa-solid fa-book-open text-xl"></i>
+        <span class="text-xs font-bold">핵심개념</span>
+      </button>
+      <button onclick="switchTab('practice')" class="mobile-nav-btn text-gray-400 flex flex-col items-center gap-1">
+        <i class="fa-solid fa-graduation-cap text-xl"></i>
+        <span class="text-xs font-bold">실전연습</span>
+      </button>
+    </div>
+  </footer>
+
+  <script>
+    // ------------------------------------------------------------
+    // 1. 소리 재생 시스템 (Web Audio API를 이용한 음성 및 피아노 음 합성)
+    // ------------------------------------------------------------
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // 피아노 건반 주파수 매핑 (MIDI Note 번호 기준)
+    function getFrequency(note) {
+      return 440 * Math.pow(2, (note - 69) / 12);
+    }
+
+    // 소리(피아노톤) 한 음 재생 함수
+    function playNote(note, duration, startTime) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc.type = 'triangle'; // 동요와 어울리는 깨끗한 트라이앵글파
+      osc.frequency.value = getFrequency(note);
+      
+      // 부드러운 피아노식 소리 페이드 아웃 효과 적용
+      gain.gain.setValueAtTime(0, startTime);
+      gain.gain.linearRampToValueAtTime(0.3, startTime + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+      
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      osc.start(startTime);
+      osc.stop(startTime + duration);
+    }
+
+    // 1~3절 커스텀 멜로디 정보 (수정된 가사 음절 쪼개기 및 정밀 장단음 반영)
+    const melodyData = {
+      1: {
+        notes: [
+          64, 62, 60, 62, 64, 64, 64, // 다 양 해 야 안 정 돼
+          62, 62, 62, 64, 64, 64,     // 원 료 와 건 강 줘
+          64, 62, 60, 62, 64, 64, 64, // 구 성 원 들 모 두 다
+          62, 62, 64, 62, 60          // 자 체 로 소 중
+        ],
+        durations: [
+          0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8,
+          0.4, 0.4, 0.8, 0.4, 0.4, 0.8,
+          0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8,
+          0.4, 0.4, 0.4, 0.4, 0.8
+        ]
+      },
+      2: {
+        notes: [
+          64, 62, 60, 62, 64, 64, 64, // 생 태 통 로 만 들 고
+          62, 62, 62, 62, 64, 64, 64, // [보 호] 구 역 지 정 해
+          64, 64, 64, 62, 60, 62, 64, 64, 64, // [멸 종][위 기] 생 물 복 원 해
+          62, 62, 64, 62, 60          // 캠 페 인 하 자
+        ],
+        durations: [
+          0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8,
+          0.2, 0.2, 0.4, 0.8, 0.4, 0.4, 0.8,
+          0.2, 0.2, 0.2, 0.2, 0.4, 0.4, 0.4, 0.4, 0.8,
+          0.4, 0.4, 0.4, 0.4, 0.8
+        ]
+      },
+      3: {
+        notes: [
+          64, 62, 60, 62, 64, 64, 64, // 자 연 훼 손 안 하 고
+          62, 62, 62, 62, 64, 64, 64, 64, // [재 활] 용 품 [분 리] 배 출
+          64, 62, 60, 62, 64, 64, 64, // 외 래 종 발 견 하 면
+          62, 62, 64, 62, 60          // 기 관 에 신 고
+        ],
+        durations: [
+          0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8,
+          0.2, 0.2, 0.4, 0.8, 0.2, 0.2, 0.4, 0.8,
+          0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8,
+          0.4, 0.4, 0.4, 0.4, 0.8
+        ]
+      }
+    };
+
+    // 정밀 가사 매핑 정보
+    const lyrics = {
+      1: ["다", "양", "해", "야", "안", "정", "돼", "원", "료", "와", "건", "강", "줘", "구", "성", "원", "들", "모", "두", "다", "자", "체", "로", "소", "중"],
+      2: ["생", "태", "통", "로", "만", "들", "고", "보", "호", "구", "역", "지", "정", "해", "멸", "종", "위", "기", "생", "물", "복", "원", "해", "캠", "페", "인", "하", "자"],
+      3: ["자", "연", "훼", "손", "안", "하", "고", "재", "활", "용", "품", "분", "리", "배", "출", "외", "래", "종", "발", "견", "하", "면", "기", "관", "에", "신", "고"]
+    };
+
+    let activeTimers = [];
+
+    // 활성화된 타이머 중지 함수
+    function stopSound() {
+      activeTimers.forEach(t => clearTimeout(t));
+      activeTimers = [];
+      document.getElementById('playing-lyric').innerText = '구절을 누르거나 전체 재생을 눌러보세요!';
+    }
+
+    // 특정 가사 구절 클릭 시, 한 소절만 멜로디와 연주 가사 싱크 매칭
+    function playSingleLine(notes, durations, lineLyrics) {
+      stopSound();
+      audioCtx.resume();
+      let now = audioCtx.currentTime;
+      let totalDelay = 0;
+
+      notes.forEach((note, index) => {
+        const duration = durations[index] || 0.4;
+        const delayMs = totalDelay * 1000;
+        
+        // 사운드 트리거 예약
+        playNote(note, duration, now + totalDelay);
+        
+        // UI 연주 가사 하이라이팅 예약
+        const timer = setTimeout(() => {
+          let displayedText = "";
+          for(let i=0; i<=index; i++) {
+            displayedText += (lineLyrics[i] || "") + " ";
+          }
+          document.getElementById('playing-lyric').innerText = displayedText;
+          animateVisualizer();
+        }, delayMs);
+        
+        activeTimers.push(timer);
+        totalDelay += duration;
+      });
+    }
+
+    // 단독 1/2/3절 연속 완창 재생 함수
+    function playMelody(stanza) {
+      stopSound();
+      audioCtx.resume();
+      let now = audioCtx.currentTime;
+      let totalDelay = 0;
+      const stanzaLyrics = lyrics[stanza];
+      const notes = melodyData[stanza].notes;
+      const durations = melodyData[stanza].durations;
+
+      notes.forEach((note, index) => {
+        const duration = durations[index];
+        const delayMs = totalDelay * 1000;
+        
+        playNote(note, duration, now + totalDelay);
+        
+        const timer = setTimeout(() => {
+          // 흐르는 가사 렌더링
+          let progress = "";
+          let startSlice = Math.max(0, index - 5);
+          for(let i = startSlice; i <= index; i++) {
+            progress += (stanzaLyrics[i] || "") + "-";
+          }
+          document.getElementById('playing-lyric').innerText = `[${stanza}절] ` + progress.slice(0, -1);
+          animateVisualizer();
+        }, delayMs);
+
+        activeTimers.push(timer);
+        totalDelay += duration;
+      });
+    }
+
+    // 1~3절 연속 풀 완창
+    function playFullSong() {
+      stopSound();
+      audioCtx.resume();
+      let now = audioCtx.currentTime;
+      let totalDelay = 0;
+
+      // 1절 -> 2절 -> 3절 순차 예약 재생
+      [1, 2, 3].forEach((stanza) => {
+        const stanzaLyrics = lyrics[stanza];
+        const notes = melodyData[stanza].notes;
+        const durations = melodyData[stanza].durations;
+        
+        notes.forEach((note, index) => {
+          const duration = durations[index];
+          const delayMs = totalDelay * 1000;
+          
+          playNote(note, duration, now + totalDelay);
+          
+          const timer = setTimeout(() => {
+            let progress = "";
+            let startSlice = Math.max(0, index - 5);
+            for(let i = startSlice; i <= index; i++) {
+              progress += (stanzaLyrics[i] || "") + "-";
+            }
+            document.getElementById('playing-lyric').innerText = `[${stanza}절] ` + progress.slice(0, -1);
+            animateVisualizer();
+          }, delayMs);
+
+          activeTimers.push(timer);
+          totalDelay += duration;
+        });
+        
+        // 절간 휴식 간격 제공
+        totalDelay += 1.5;
+      });
+    }
+
+    // 음표 비주얼라이저 시각화 바 랜덤 조절 효과
+    function animateVisualizer() {
+      const bars = document.querySelectorAll('#visualizer-bars span');
+      bars.forEach(bar => {
+        const randomHeight = Math.floor(Math.random() * 24) + 12; // 12px ~ 36px
+        bar.style.height = `${randomHeight}px`;
+      });
+    }
+
+    // ------------------------------------------------------------
+    // 2. 탭 전환 제어 시스템
+    // ------------------------------------------------------------
+    function switchTab(tabId) {
+      // 오디오 강제 종료
+      stopSound();
+
+      // 모든 탭 콘텐츠 숨김
+      document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.remove('active');
+      });
+      // 대상 탭 표시
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+
+      // 웹 네비게이션 탭 버튼 색상 변경
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-500', 'text-white', 'shadow-md');
+        btn.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+      });
+      document.getElementById(`btn-tab-${tabId}`).classList.add('bg-blue-500', 'text-white', 'shadow-md');
+      document.getElementById(`btn-tab-${tabId}`).classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+
+      // 모바일 퀵메뉴 버튼 색상 동기화
+      document.querySelectorAll('.mobile-nav-btn').forEach((btn, idx) => {
+        const ids = ['song', 'study', 'practice'];
+        if (ids[idx] === tabId) {
+          btn.classList.add('text-blue-500');
+          btn.classList.remove('text-gray-400');
+        } else {
+          btn.classList.remove('text-blue-500');
+          btn.classList.add('text-gray-400');
+        }
+      });
+    }
+
+    // ------------------------------------------------------------
+    // 3. 초성 퀴즈 공통 빌더 및 리액션 제어
+    // ------------------------------------------------------------
+    function buildChosungHTML(chosungArr) {
+      return chosungArr.map(ch => {
+        if (ch === ' ') {
+          return `<span class="w-2.5"></span>`;
+        }
+        return `<span class="char-box border border-emerald-400 bg-white text-emerald-600 font-extrabold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-md text-xs sm:text-sm transition-all duration-150 shadow-sm">
+          ${ch}
+        </span>`;
+      }).join('');
+    }
+
+    function buildWordHTML(word) {
+      return word.split('').map(char => {
+        if (char === ' ') {
+          return `<span class="w-2.5"></span>`;
+        }
+        return `<span class="char-box border border-emerald-500 bg-emerald-500 text-white font-extrabold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-md text-xs sm:text-sm transition-all duration-150 shadow-sm">
+          ${char}
+        </span>`;
+      }).join('');
+    }
+
+    function buildPracticeChosungHTML(chosungArr) {
+      return chosungArr.map(ch => {
+        if (ch === ' ') {
+          return `<span class="w-2.5"></span>`;
+        }
+        return `<span class="char-box border border-orange-400 bg-white text-orange-600 font-extrabold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-md text-xs sm:text-sm transition-all duration-150 shadow-sm">
+          ${ch}
+        </span>`;
+      }).join('');
+    }
+
+    function buildPracticeWordHTML(word) {
+      return word.split('').map(char => {
+        if (char === ' ') {
+          return `<span class="w-2.5"></span>`;
+        }
+        return `<span class="char-box border border-orange-500 bg-orange-500 text-white font-extrabold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-md text-xs sm:text-sm transition-all duration-150 shadow-sm">
+          ${char}
+        </span>`;
+      }).join('');
+    }
+
+    // 초성 칸 초기 세팅
+    function initBlanks() {
+      // 1. 단원 키워드 퀴즈 이니셜라이징
+      const studyBlanks = document.querySelectorAll('.word-blank');
+      studyBlanks.forEach(blank => {
+        const chosung = blank.getAttribute('data-chosung').split(',');
+        blank.innerHTML = buildChosungHTML(chosung);
+        blank.setAttribute('data-revealed', 'false');
+        
+        blank.onclick = function() {
+          toggleBlank(this);
+        };
+      });
+
+      // 2. 실전 연습 퀴즈 이니셜라이징
+      const practiceBlanks = document.querySelectorAll('.practice-blank');
+      practiceBlanks.forEach(blank => {
+        const chosung = blank.getAttribute('data-chosung').split(',');
+        blank.innerHTML = buildPracticeChosungHTML(chosung);
+        blank.setAttribute('data-revealed', 'false');
+        
+        blank.onclick = function() {
+          togglePracticeBlank(this);
+        };
+      });
+    }
+
+    // [단원 키워드 퀴즈] 단어 보이기/가리기 토글
+    function toggleBlank(element) {
+      const isRevealed = element.getAttribute('data-revealed') === 'true';
+      const word = element.getAttribute('data-word');
+      const chosung = element.getAttribute('data-chosung').split(',');
+
+      if (isRevealed) {
+        element.innerHTML = buildChosungHTML(chosung);
+        element.setAttribute('data-revealed', 'false');
+        // 오답/리셋 스타일 피드백 효과음 (낮은 도)
+        audioCtx.resume();
+        playNote(52, 0.05, audioCtx.currentTime);
+      } else {
+        element.innerHTML = buildWordHTML(word);
+        element.setAttribute('data-revealed', 'true');
+        // 정답 정밀 연주 효과음 (도-미)
+        audioCtx.resume();
+        playNote(60, 0.05, audioCtx.currentTime);
+        setTimeout(() => playNote(64, 0.08, audioCtx.currentTime), 60);
+      }
+    }
+
+    // [실전 연습 퀴즈] 단어 보이기/가리기 토글
+    function togglePracticeBlank(element) {
+      const isRevealed = element.getAttribute('data-revealed') === 'true';
+      const word = element.getAttribute('data-word');
+      const chosung = element.getAttribute('data-chosung').split(',');
+
+      if (isRevealed) {
+        element.innerHTML = buildPracticeChosungHTML(chosung);
+        element.setAttribute('data-revealed', 'false');
+        // 오답/리셋 스타일 피드백 효과음 (낮은 도)
+        audioCtx.resume();
+        playNote(52, 0.05, audioCtx.currentTime);
+      } else {
+        element.innerHTML = buildPracticeWordHTML(word);
+        element.setAttribute('data-revealed', 'true');
+        // 정답 정밀 연주 효과음 (파-라)
+        audioCtx.resume();
+        playNote(65, 0.05, audioCtx.currentTime);
+        setTimeout(() => playNote(69, 0.08, audioCtx.currentTime), 60);
+      }
+    }
+
+    // [단원 키워드] 전체 정답 펼치기
+    function revealAllBlanks() {
+      const blanks = document.querySelectorAll('.word-blank');
+      blanks.forEach(blank => {
+        const word = blank.getAttribute('data-word');
+        blank.innerHTML = buildWordHTML(word);
+        blank.setAttribute('data-revealed', 'true');
+      });
+      // 정답 아르페지오 사운드
+      audioCtx.resume();
+      playNote(60, 0.05, audioCtx.currentTime);
+      setTimeout(() => playNote(64, 0.05, audioCtx.currentTime), 60);
+      setTimeout(() => playNote(67, 0.1, audioCtx.currentTime), 120);
+    }
+
+    // [단원 키워드] 전체 초성으로 리셋
+    function hideAllBlanks() {
+      const blanks = document.querySelectorAll('.word-blank');
+      blanks.forEach(blank => {
+        const chosung = blank.getAttribute('data-chosung').split(',');
+        blank.innerHTML = buildChosungHTML(chosung);
+        blank.setAttribute('data-revealed', 'false');
+      });
+      // 리셋 사운드
+      audioCtx.resume();
+      playNote(48, 0.15, audioCtx.currentTime);
+    }
+
+    // [실전 연습] 전체 정답 펼치기
+    function revealAllPractice() {
+      const blanks = document.querySelectorAll('.practice-blank');
+      blanks.forEach(blank => {
+        const word = blank.getAttribute('data-word');
+        blank.innerHTML = buildPracticeWordHTML(word);
+        blank.setAttribute('data-revealed', 'true');
+      });
+      // 정답 아르페지오 사운드
+      audioCtx.resume();
+      playNote(65, 0.05, audioCtx.currentTime);
+      setTimeout(() => playNote(69, 0.05, audioCtx.currentTime), 60);
+      setTimeout(() => playNote(72, 0.1, audioCtx.currentTime), 120);
+    }
+
+    // [실전 연습] 전체 초성으로 리셋
+    function hideAllPractice() {
+      const blanks = document.querySelectorAll('.practice-blank');
+      blanks.forEach(blank => {
+        const chosung = blank.getAttribute('data-chosung').split(',');
+        blank.innerHTML = buildPracticeChosungHTML(chosung);
+        blank.setAttribute('data-revealed', 'false');
+      });
+      // 리셋 사운드
+      audioCtx.resume();
+      playNote(53, 0.15, audioCtx.currentTime);
+    }
+
+    // 페이지 로딩 완료 후 실행
+    window.onload = function() {
+      initBlanks();
+    }
+  </script>
+</body>
+</html>
