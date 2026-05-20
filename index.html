@@ -1,956 +1,1361 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>생물다양성 암기 비행기</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome Icons for Beautiful UI -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght=400;700&family=Nanum+Gothic:wght=400;700;800&display=swap');
-    
-    .font-cute {
-      font-family: 'Gaegu', cursive;
-    }
-    .font-main {
-      font-family: 'Nanum Gothic', sans-serif;
-    }
-    
-    /* 애니메이션 효과 */
-    @keyframes float {
-      0% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-10px) rotate(3deg); }
-      100% { transform: translateY(0px) rotate(0deg); }
-    }
-    .floating-plane {
-      animation: float 4s ease-in-out infinite;
-    }
-    
-    /* 탭 전환 트랜지션 */
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인구 구조와 사회 문제 5단계 암기 프로그램</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght=300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Pretendard', sans-serif;
+        }
+        /* Flip card styling */
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+        /* Scrollbar customizing */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-b from-blue-50 to-green-50 min-h-screen font-main text-gray-800">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-  <!-- 상단 네비게이션 헤더 -->
-  <header class="bg-white shadow-md sticky top-0 z-50">
-    <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-2">
-        <i class="fa-solid fa-paper-plane text-blue-500 text-2xl floating-plane"></i>
-        <h1 class="text-xl md:text-2xl font-extrabold text-blue-600 tracking-wide font-cute">생물다양성 암기 비행기✈️</h1>
-      </div>
-      <div class="text-xs md:text-sm font-semibold bg-green-100 text-green-800 px-3 py-1 rounded-full">
-        초등/중등 과학 필수 암기!
-      </div>
-    </div>
-  </header>
-
-  <main class="max-w-4xl mx-auto px-4 py-6 pb-24">
-    
-    <!-- 1. 앱 인트로 / 가이드 요약 -->
-    <section class="bg-white rounded-3xl p-6 shadow-sm border border-blue-100 mb-6 relative overflow-hidden">
-      <div class="absolute right-4 top-4 opacity-10 text-9xl text-blue-300">
-        <i class="fa-solid fa-seedling"></i>
-      </div>
-      <h2 class="text-2xl font-cute font-bold text-gray-800 mb-2 flex items-center gap-2">
-        <span class="text-2xl">🌱</span> "떴다 떴다 비행기" 정밀 가사 암기법!
-      </h2>
-      <p class="text-gray-600 text-sm md:text-base leading-relaxed">
-        새롭게 편곡된 <strong>박자 매칭 가사</strong>로 즐겁게 노래 부르고, 우측의 <strong>초성 퀴즈형 교과 핵심 정리</strong>와 <strong>실전 연습</strong>을 활용해 시험 전에 완벽하게 머릿속에 기억해 보세요!
-      </p>
-    </section>
-
-    <!-- 2. 탭 메뉴 구성 (3개 탭으로 구성) -->
-    <div class="grid grid-cols-3 gap-1.5 mb-6">
-      <button onclick="switchTab('song')" id="btn-tab-song" class="tab-btn active bg-blue-500 text-white font-bold py-3 px-1 rounded-2xl shadow-md transition-all text-center text-xs sm:text-sm md:text-base">
-        <i class="fa-solid fa-music mb-1 block md:inline md:mr-1"></i> 암기송 부르기
-      </button>
-      <button onclick="switchTab('study')" id="btn-tab-study" class="tab-btn bg-white hover:bg-gray-100 text-gray-700 font-bold py-3 px-1 rounded-2xl shadow-sm transition-all text-center text-xs sm:text-sm md:text-base border border-gray-200">
-        <i class="fa-solid fa-book-open mb-1 block md:inline md:mr-1"></i> 교과 핵심 (키워드)
-      </button>
-      <button onclick="switchTab('practice')" id="btn-tab-practice" class="tab-btn bg-white hover:bg-gray-100 text-gray-700 font-bold py-3 px-1 rounded-2xl shadow-sm transition-all text-center text-xs sm:text-sm md:text-base border border-gray-200">
-        <i class="fa-solid fa-graduation-cap mb-1 block md:inline md:mr-1"></i> 실전 연습 (전체)
-      </button>
-    </div>
-
-    <!-- ==================== TAB 1: 암기송 부르기 ==================== -->
-    <section id="tab-song" class="tab-content active space-y-6">
-      
-      <!-- 플레이 컨트롤러 (전체 오디오 연주기) -->
-      <div class="bg-blue-600 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden">
-        <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl">
-          <i class="fa-solid fa-music"></i>
-        </div>
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <span class="bg-blue-500 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">Song Mode</span>
-            <h3 class="text-xl md:text-2xl font-bold mt-2">정밀 음정/가사 튜닝 완료!</h3>
-            <p class="text-blue-100 text-sm mt-1">원하는 마디를 클릭하거나 전체 반주를 재생해 노래를 익혀보세요 🎹</p>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            <button onclick="playFullSong()" class="bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold px-4 py-2 rounded-xl flex items-center gap-2 transition-all shadow-md">
-              <i class="fa-solid fa-circle-play"></i> 전체 반주 듣기
-            </button>
-            <button onclick="stopSound()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold px-4 py-2 rounded-xl flex items-center gap-2 transition-all">
-              <i class="fa-solid fa-circle-stop"></i> 정지
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 절 선택 컨트롤 (1, 2, 3절 단독 연주 버튼 포함) -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <!-- 1절 카드 -->
-        <div class="bg-white rounded-3xl p-6 border-2 border-emerald-400 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-start mb-4">
-              <span class="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-3 py-1 rounded-full">1절 : 다양성 필요성</span>
-              <button onclick="playMelody(1)" class="text-emerald-500 hover:text-emerald-700 transition-colors" title="1절 멜로디만 듣기">
-                <i class="fa-solid fa-volume-high text-xl"></i>
-              </button>
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-md shadow-indigo-100">
+                    <i class="fa-solid fa-brain text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-900 tracking-tight">인구 피라미드 &amp; 사회 문제 5단계 암기 마스터</h1>
+                    <p class="text-xs text-indigo-600 font-medium">인도 · 일본 · 사우디아라비아 완벽 암기 솔루션</p>
+                </div>
             </div>
+
+            <!-- Global Action Controls -->
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <button id="btnResetAll" class="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-lg transition-colors">
+                    <i class="fa-solid fa-rotate-right"></i> 전체 초기화
+                </button>
+                <div class="bg-indigo-50 border border-indigo-100 text-indigo-700 px-4 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2">
+                    <span class="text-xs text-indigo-500">전체 암기율:</span>
+                    <span id="globalProgress">0%</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start w-full">
+        
+        <!-- LEFT: Fixed Chart Panel (Highly optimized for viewing while solving - simplified SVG Pyramids) -->
+        <section class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-4 shadow-sm lg:sticky lg:top-[76px] max-h-[calc(100vh-100px)] overflow-y-auto flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <h2 class="font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-area text-indigo-500"></i> 단순화된 인구 피라미드 (2022년)
+                </h2>
+                <span class="text-xs text-slate-400 bg-slate-50 px-2.5 py-1 rounded-md">관찰하며 풀기</span>
+            </div>
+
+            <!-- Legend -->
+            <div class="flex items-center justify-center gap-6 text-[11px] font-semibold bg-slate-50 p-2 rounded-xl border border-slate-100">
+                <div class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-sm bg-[#8dc63f]"></span>
+                    <span>남성 인구 (%)</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-sm bg-[#9e83ba]"></span>
+                    <span>여성 인구 (%)</span>
+                </div>
+            </div>
+
+            <!-- Interactive Simplified Pyramid Grid -->
+            <div class="grid grid-cols-1 gap-4">
+                
+                <!-- INDIA -->
+                <div class="border border-slate-100 rounded-xl p-3 bg-gradient-to-b from-slate-50 to-white">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-bold text-xs text-slate-800 bg-amber-100 text-amber-800 px-2 py-0.5 rounded">인도 (India)</span>
+                        <span class="text-[10px] text-amber-700 font-bold">청장년층 비율 최대 및 유소년층 하단부 확장</span>
+                    </div>
+                    <!-- SVG Chart India -->
+                    <div class="h-[140px] w-full flex items-center justify-center bg-white rounded-lg p-1 border border-slate-100 relative">
+                        <svg class="w-full h-full" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background Grid -->
+                            <line x1="100" y1="5" x2="100" y2="115" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2 2" />
+                            <line x1="40" y1="5" x2="40" y2="115" stroke="#f1f5f9" stroke-width="0.5" />
+                            <line x1="160" y1="5" x2="160" y2="115" stroke="#f1f5f9" stroke-width="0.5" />
+                            
+                            <!-- Dashed Age Guide Lines -->
+                            <line x1="10" y1="35" x2="190" y2="35" stroke="#e2e8f0" stroke-width="0.75" stroke-dasharray="3 3" />
+                            <line x1="10" y1="95" x2="190" y2="95" stroke="#e2e8f0" stroke-width="0.75" stroke-dasharray="3 3" />
+                            <text x="10" y="32" font-size="5" fill="#94a3b8">65세</text>
+                            <text x="10" y="92" font-size="5" fill="#94a3b8">15세</text>
+
+                            <!-- India Male Bars (Left) - 청장년층 비율이 가장 높고 유소년층도 넓게 유지되는 삼각형 형태 -->
+                            <rect x="97" y="10" width="3" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="94" y="17" width="6" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="90" y="24" width="10" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="85" y="31" width="15" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="78" y="38" width="22" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="68" y="45" width="32" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="58" y="52" width="42" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="48" y="59" width="52" height="5" fill="#8dc63f" rx="0.5"/> <!-- 청장년 중심 피크 -->
+                            <rect x="42" y="66" width="58" height="5" fill="#8dc63f" rx="0.5"/> <!-- 청장년 중심 피크 -->
+                            <rect x="40" y="73" width="60" height="5" fill="#8dc63f" rx="0.5"/> <!-- 청장년 중심 피크 -->
+                            <rect x="41" y="80" width="59" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="43" y="87" width="57" height="5" fill="#8dc63f" rx="0.5"/>
+                            <!-- 0-14세 유소년층 확장 구역 -->
+                            <rect x="45" y="94" width="55" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="46" y="101" width="54" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="48" y="108" width="52" height="5" fill="#8dc63f" rx="0.5"/>
+
+                            <!-- India Female Bars (Right) -->
+                            <rect x="100" y="10" width="2.5" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="17" width="5.5" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="24" width="9" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="31" width="14" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="38" width="21" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="45" width="31" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="52" width="41" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="59" width="50" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="66" width="55" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="73" width="57" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="80" width="56" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="87" width="54" height="5" fill="#9e83ba" rx="0.5"/>
+                            <!-- 0-14세 유소년층 확장 구역 -->
+                            <rect x="100" y="94" width="52" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="101" width="51" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="108" width="49" height="5" fill="#9e83ba" rx="0.5"/>
+
+                            <!-- Highlight for Youth -->
+                            <ellipse cx="100" cy="103" rx="55" ry="12" stroke="#f43f5e" stroke-width="1" stroke-dasharray="3 2" fill="none" />
+                        </svg>
+                        <div class="absolute bottom-2 left-2 text-[8px] text-pink-600 bg-pink-50 px-1.5 py-0.5 rounded font-bold border border-pink-100">0~14세 하단부 발달</div>
+                    </div>
+                </div>
+
+                <!-- JAPAN -->
+                <div class="border border-slate-100 rounded-xl p-3 bg-gradient-to-b from-slate-50 to-white">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-bold text-xs text-slate-800 bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">일본 (Japan)</span>
+                        <span class="text-[10px] text-emerald-700 font-bold">노년층(65세 이상) 상단 팽창 · 유소년 극감 (항아리형)</span>
+                    </div>
+                    <!-- SVG Chart Japan -->
+                    <div class="h-[140px] w-full flex items-center justify-center bg-white rounded-lg p-1 border border-slate-100 relative">
+                        <svg class="w-full h-full" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background Grid -->
+                            <line x1="100" y1="5" x2="100" y2="115" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2 2" />
+                            <line x1="40" y1="5" x2="40" y2="115" stroke="#f1f5f9" stroke-width="0.5" />
+                            <line x1="160" y1="5" x2="160" y2="115" stroke="#f1f5f9" stroke-width="0.5" />
+                            
+                            <!-- Dashed Age Guide Lines -->
+                            <line x1="10" y1="35" x2="190" y2="35" stroke="#e2e8f0" stroke-width="0.75" stroke-dasharray="3 3" />
+                            <line x1="10" y1="95" x2="190" y2="95" stroke="#e2e8f0" stroke-width="0.75" stroke-dasharray="3 3" />
+                            <text x="10" y="32" font-size="5" fill="#94a3b8">65세</text>
+                            <text x="10" y="92" font-size="5" fill="#94a3b8">15세</text>
+
+                            <!-- Japan Male Bars (Left) - 두 개의 큰 돌출부가 있는 전형적인 초고령 역피라미드 항아리형 -->
+                            <rect x="85" y="10" width="15" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="75" y="17" width="25" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="68" y="24" width="32" height="5" fill="#8dc63f" rx="0.5"/>
+                            <!-- 65세 이상 고령화 피크 돌출 -->
+                            <rect x="52" y="31" width="48" height="5" fill="#8dc63f" rx="0.5"/> <!-- 70-74 부근 1차 피크 -->
+                            <rect x="54" y="38" width="46" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="58" y="45" width="42" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="52" y="52" width="48" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="46" y="59" width="54" height="5" fill="#8dc63f" rx="0.5"/> <!-- 45-49 부근 2차 피크 -->
+                            <rect x="50" y="66" width="50" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="58" y="73" width="42" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="66" y="80" width="34" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="72" y="87" width="28" height="5" fill="#8dc63f" rx="0.5"/>
+                            <!-- 0-14세 유소년층 극도의 축소 -->
+                            <rect x="80" y="94" width="20" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="82" y="101" width="18" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="84" y="108" width="16" height="5" fill="#8dc63f" rx="0.5"/>
+
+                            <!-- Japan Female Bars (Right) -->
+                            <rect x="100" y="10" width="16" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="17" width="26" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="24" width="34" height="5" fill="#9e83ba" rx="0.5"/>
+                            <!-- 65세 이상 고령화 피크 돌출 -->
+                            <rect x="100" y="31" width="50" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="38" width="48" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="45" width="44" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="52" width="49" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="59" width="55" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="66" width="51" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="73" width="43" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="80" width="35" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="87" width="29" height="5" fill="#9e83ba" rx="0.5"/>
+                            <!-- 0-14세 유소년층 극도의 축소 -->
+                            <rect x="100" y="94" width="21" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="101" width="19" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="108" width="17" height="5" fill="#9e83ba" rx="0.5"/>
+
+                            <!-- Highlight Circle at Elderly -->
+                            <ellipse cx="100" cy="27" rx="55" ry="20" stroke="#f43f5e" stroke-width="1.25" stroke-dasharray="3 2" fill="none" />
+                        </svg>
+                        <div class="absolute top-2 right-2 text-[8px] text-pink-600 bg-pink-50 px-1.5 py-0.5 rounded font-bold border border-pink-100">65세 이상 상단 팽창</div>
+                    </div>
+                </div>
+
+                <!-- SAUDI ARABIA -->
+                <div class="border border-slate-100 rounded-xl p-3 bg-gradient-to-b from-slate-50 to-white">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-bold text-xs text-slate-800 bg-blue-100 text-blue-800 px-2 py-0.5 rounded">사우디아라비아 (Saudi Arabia)</span>
+                        <span class="text-[10px] text-blue-700 font-bold">청장년층 남성(좌측 중앙) 이상 돌출</span>
+                    </div>
+                    <!-- SVG Chart Saudi -->
+                    <div class="h-[140px] w-full flex items-center justify-center bg-white rounded-lg p-1 border border-slate-100 relative">
+                        <svg class="w-full h-full" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background Grid -->
+                            <line x1="100" y1="5" x2="100" y2="115" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2 2" />
+                            <line x1="40" y1="5" x2="40" y2="115" stroke="#f1f5f9" stroke-width="0.5" />
+                            <line x1="160" y1="5" x2="160" y2="115" stroke="#f1f5f9" stroke-width="0.5" />
+                            
+                            <!-- Dashed Age Guide Lines -->
+                            <line x1="10" y1="35" x2="190" y2="35" stroke="#e2e8f0" stroke-width="0.75" stroke-dasharray="3 3" />
+                            <line x1="10" y1="95" x2="190" y2="95" stroke="#e2e8f0" stroke-width="0.75" stroke-dasharray="3 3" />
+                            <text x="10" y="32" font-size="5" fill="#94a3b8">65세</text>
+                            <text x="10" y="92" font-size="5" fill="#94a3b8">15세</text>
+
+                            <!-- Saudi Male Bars (Left) - 매우 기형적인 형태 (청장년층 외국인 남성 노동 유입 대돌출) -->
+                            <rect x="97" y="10" width="3" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="95" y="17" width="5" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="92" y="24" width="8" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="88" y="31" width="12" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="80" y="38" width="20" height="5" fill="#8dc63f" rx="0.5"/>
+                            <!-- 청장년 남성 급진 돌출 구간 (15~64세 내 남성) -->
+                            <rect x="55" y="45" width="45" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="25" y="52" width="75" height="5" fill="#8dc63f" rx="0.5"/> <!-- 대돌출 -->
+                            <rect x="10" y="59" width="90" height="5" fill="#8dc63f" rx="0.5"/> <!-- 대돌출 -->
+                            <rect x="15" y="66" width="85" height="5" fill="#8dc63f" rx="0.5"/> <!-- 대돌출 -->
+                            <rect x="42" y="73" width="58" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="65" y="80" width="35" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="74" y="87" width="26" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="78" y="94" width="22" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="80" y="101" width="20" height="5" fill="#8dc63f" rx="0.5"/>
+                            <rect x="81" y="108" width="19" height="5" fill="#8dc63f" rx="0.5"/>
+
+                            <!-- Saudi Female Bars (Right) - 완만한 일반적인 곡선 구조 -->
+                            <rect x="100" y="10" width="3" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="17" width="4.5" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="24" width="7" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="31" width="11" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="38" width="16" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="45" width="21" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="52" width="25" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="59" width="27" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="66" width="28" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="73" width="27" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="80" width="25" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="87" width="23" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="94" width="21" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="101" width="19" height="5" fill="#9e83ba" rx="0.5"/>
+                            <rect x="100" y="108" width="18" height="5" fill="#9e83ba" rx="0.5"/>
+
+                            <!-- Highlight Circle only at Left Male Side (Pink dashed line) -->
+                            <ellipse cx="50" cy="59" rx="42" ry="18" stroke="#f43f5e" stroke-width="1.25" stroke-dasharray="3 2" fill="none" />
+                        </svg>
+                        <div class="absolute bottom-2 left-2 text-[8px] text-pink-600 bg-pink-50 px-1.5 py-0.5 rounded font-bold border border-pink-100">남성 청장년층 비정상 대유입</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- RIGHT: Interactive Studying Panel -->
+        <section class="lg:col-span-7 flex flex-col gap-6">
             
-            <div class="space-y-4 font-cute text-xl">
-              <div class="p-2 rounded-lg hover:bg-emerald-50 cursor-pointer transition-colors" onclick="playSingleLine([64, 62, 60, 62, 64, 64, 64], [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8], ['다','양','해','야','안','정','돼'])">
-                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
-                  <span>미레도레 / 미미미-</span>
-                  <i class="fa-solid fa-play text-[10px]"></i>
+            <!-- Step Selector (Navigation) -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase">Learning Step</span>
+                    <h3 class="text-sm font-extrabold text-slate-800">암기 단계 변경하기</h3>
                 </div>
-                <p class="font-bold text-emerald-600">다-양-해-야 / 안-정-돼-</p>
-              </div>
-              <div class="p-2 rounded-lg hover:bg-emerald-50 cursor-pointer transition-colors" onclick="playSingleLine([62, 62, 62, 64, 64, 64], [0.4, 0.4, 0.8, 0.4, 0.4, 0.8], ['원','료','와','건','강','줘'])">
-                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
-                  <span>레레레- / 미미미-</span>
-                  <i class="fa-solid fa-play text-[10px]"></i>
+                <div class="grid grid-cols-5 gap-2" id="stepSelector">
+                    <button data-step="1" class="step-btn py-2.5 px-1 sm:px-3 text-xs sm:text-sm font-bold rounded-xl border-2 transition-all flex flex-col items-center gap-1 bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-100">
+                        <span>1단계</span>
+                        <span class="text-[9px] opacity-90 font-medium">초성 소량</span>
+                    </button>
+                    <button data-step="2" class="step-btn py-2.5 px-1 sm:px-3 text-xs sm:text-sm font-bold rounded-xl border-2 transition-all flex flex-col items-center gap-1 bg-white border-slate-200 hover:border-slate-300 text-slate-700">
+                        <span>2단계</span>
+                        <span class="text-[9px] text-slate-500 font-medium">초성 보통</span>
+                    </button>
+                    <button data-step="3" class="step-btn py-2.5 px-1 sm:px-3 text-xs sm:text-sm font-bold rounded-xl border-2 transition-all flex flex-col items-center gap-1 bg-white border-slate-200 hover:border-slate-300 text-slate-700">
+                        <span>3단계</span>
+                        <span class="text-[9px] text-slate-500 font-medium">초성 많음</span>
+                    </button>
+                    <button data-step="4" class="step-btn py-2.5 px-1 sm:px-3 text-xs sm:text-sm font-bold rounded-xl border-2 transition-all flex flex-col items-center gap-1 bg-white border-slate-200 hover:border-slate-300 text-slate-700">
+                        <span>4단계</span>
+                        <span class="text-[9px] text-slate-500 font-medium">전체 초성</span>
+                    </button>
+                    <button data-step="5" class="step-btn py-2.5 px-1 sm:px-3 text-xs sm:text-sm font-bold rounded-xl border-2 transition-all flex flex-col items-center gap-1 bg-white border-slate-200 hover:border-slate-300 text-slate-700">
+                        <span>5단계</span>
+                        <span class="text-[9px] text-slate-500 font-medium">완전 빈칸</span>
+                    </button>
                 </div>
-                <p class="font-bold text-emerald-600">원-료-와- / 건-강-줘-</p>
-              </div>
-              <div class="p-2 rounded-lg hover:bg-emerald-50 cursor-pointer transition-colors" onclick="playSingleLine([64, 62, 60, 62, 64, 64, 64], [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8], ['구','성','원','들','모','두','다'])">
-                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
-                  <span>미레도레 / 미미미-</span>
-                  <i class="fa-solid fa-play text-[10px]"></i>
+                
+                <!-- Step Explanation Banner -->
+                <div class="mt-4 p-3 bg-indigo-50/50 border border-indigo-100/60 rounded-xl text-xs flex items-start gap-2.5 text-indigo-950" id="stepDesc">
+                    <i class="fa-solid fa-circle-info text-indigo-600 mt-0.5 text-sm"></i>
+                    <div>
+                        <span class="font-bold text-indigo-900" id="stepTitleText">1단계: 초성 카드 비중 소량</span>
+                        <p class="text-indigo-800/80 mt-0.5" id="stepDetailText">가장 중요한 극소수 핵심 키워드에만 초성 힌트가 들어간 네모 카드가 표기됩니다. 기본 독해 흐름을 익히세요.</p>
+                    </div>
                 </div>
-                <p class="font-bold text-emerald-600">구-성-원-들 / 모-두-다-</p>
-              </div>
-              <div class="p-2 rounded-lg hover:bg-emerald-50 cursor-pointer transition-colors" onclick="playSingleLine([62, 62, 64, 62, 60], [0.4, 0.4, 0.4, 0.4, 0.8], ['자','체','로','소','중'])">
-                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
-                  <span>레레 / 미레도-</span>
-                  <i class="fa-solid fa-play text-[10px]"></i>
-                </div>
-                <p class="font-bold text-emerald-600">자-체- / 로-소-중-</p>
-              </div>
             </div>
-          </div>
-          <div class="mt-6 pt-4 border-t border-gray-100 text-xs text-gray-500 font-sans">
-            💡 생물다양성이 가질 수 있는 자원 및 생태학적 가치와 의의
-          </div>
-        </div>
 
-        <!-- 2절 카드 -->
-        <div class="bg-white rounded-3xl p-6 border-2 border-purple-400 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-start mb-4">
-              <span class="bg-purple-100 text-purple-800 text-xs font-extrabold px-3 py-1 rounded-full">2절 : 사회적 노력</span>
-              <button onclick="playMelody(2)" class="text-purple-500 hover:text-purple-700 transition-colors" title="2절 멜로디만 듣기">
-                <i class="fa-solid fa-volume-high text-xl"></i>
-              </button>
+            <!-- Country Tab Filters & Progress -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white rounded-xl p-2 border border-slate-200">
+                <div class="flex gap-1" id="countryTabContainer">
+                    <button data-country="all" class="country-tab px-4 py-2 text-sm font-bold rounded-lg bg-indigo-50 text-indigo-700 transition-colors">전체보기</button>
+                    <button data-country="india" class="country-tab px-4 py-2 text-sm font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">인도</button>
+                    <button data-country="japan" class="country-tab px-4 py-2 text-sm font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">일본</button>
+                    <button data-country="saudi" class="country-tab px-4 py-2 text-sm font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">사우디</button>
+                </div>
+                <!-- Mode Selector -->
+                <div class="flex bg-slate-100 p-1 rounded-lg">
+                    <button id="modeStudy" class="px-3 py-1.5 text-xs font-bold rounded bg-white text-slate-800 shadow-sm flex items-center gap-1.5 transition-all">
+                        <i class="fa-solid fa-book-open"></i> 암기 학습
+                    </button>
+                    <button id="modeTest" class="px-3 py-1.5 text-xs font-semibold rounded text-slate-600 flex items-center gap-1.5 transition-all">
+                        <i class="fa-solid fa-pen-nib"></i> 직접 입력 테스트
+                    </button>
+                </div>
             </div>
-            
-            <div class="space-y-4 font-cute text-xl">
-              <div class="p-2 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors" onclick="playSingleLine([64, 62, 60, 62, 64, 64, 64], [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8], ['생','태','통','로','만','들','고'])">
-                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
-                  <span>미레도레 / 미미미-</span>
-                  <i class="fa-solid fa-play text-[10px]"></i>
-                </div>
-                <p class="font-bold text-purple-600">생-태-통-로 / 만-들-고-</p>
-              </div>
-              <!-- 보호구역 지정해: [레레]레레- 미미미- -->
-              <div class="p-2 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors" onclick="playSingleLine([62, 62, 62, 62, 64, 64, 64], [0.2, 0.2, 0.4, 0.8, 0.4, 0.4, 0.8], ['보','호','구','역','지','정','해'])">
-                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
-                  <span>[레레]레레- / 미미미-</span>
-                  <i class="fa-solid fa-play text-[10px]"></i>
-                </div>
-                <p class="font-bold text-purple-600">보-호-구-역 / 지-정-해-</p>
-              </div>
-              <!-- 멸종위기생물 복원해: [미미][미레] 도레 미미미- -->
-              <div class="p-2 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors" onclick="playSingleLine([64, 64, 64, 62, 60, 62, 64, 64, 64], [0.2, 0.2, 0.2, 0.2, 0.4, 0.4, 0.4, 0.4, 0.8], ['멸','종','위','기','생','물','복','원','해'])">
-                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
-                  <span>[미미][미레]도레 / 미미미-</span>
-                  <i class="fa-solid fa-play text-[10px]"></i>
-                </div>
-                <p class="font-bold text-purple-600">멸-종-위-기-생-물 / 복-원-해-</p>
-              </div>
-              <div class="p-2 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors" onclick="playSingleLine([62, 62, 64, 62, 60], [0.4, 0.4, 0.4, 0.4, 0.8], ['캠','페','인','하','자'])">
-                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
-                  <span>레레 / 미레도-</span>
-                  <i class="fa-solid fa-play text-[10px]"></i>
-                </div>
-                <p class="font-bold text-purple-600">캠-페- / 인-하-자-</p>
-              </div>
+
+            <!-- Content Area (Card List) -->
+            <div id="cardsContainer" class="flex flex-col gap-6">
+                <!-- Javascript will render cards here -->
             </div>
-          </div>
-          <div class="mt-6 pt-4 border-t border-gray-100 text-xs text-gray-500 font-sans">
-            💡 로드킬 방지를 위한 생태통로 및 멸종위기 구호 정책 매핑
-          </div>
+
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            <p>© 2026 인구구조 암기 학습기. 인구 피라미드의 자료 해석부터 사회 문제까지 완벽 마스터.</p>
         </div>
+    </footer>
 
-        <!-- 3절 카드 -->
-        <div class="bg-white rounded-3xl p-6 border-2 border-orange-400 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-start mb-4">
-              <span class="bg-orange-100 text-orange-800 text-xs font-extrabold px-3 py-1 rounded-full">3절 : 개인적 실천</span>
-              <button onclick="playMelody(3)" class="text-orange-500 hover:text-orange-700 transition-colors" title="3절 멜로디만 듣기">
-                <i class="fa-solid fa-volume-high text-xl"></i>
-              </button>
-            </div>
-            
-            <div class="space-y-4 font-cute text-xl">
-              <div class="p-2 rounded-lg hover:bg-orange-50 cursor-pointer transition-colors" onclick="playSingleLine([64, 62, 60, 62, 64, 64, 64], [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8], ['자','연','훼','손','안','하','고'])">
-                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
-                  <span>미레도레 / 미미미-</span>
-                  <i class="fa-solid fa-play text-[10px]"></i>
-                </div>
-                <p class="font-bold text-orange-600">자-연-훼-손 / 안-하-고-</p>
-              </div>
-              <!-- 재활용품 분리배출: [레레]레레-[미미]미미- -->
-              <div class="p-2 rounded-lg hover:bg-orange-50 cursor-pointer transition-colors" onclick="playSingleLine([62, 62, 62, 62, 64, 64, 64, 64], [0.2, 0.2, 0.4, 0.8, 0.2, 0.2, 0.4, 0.8], ['재','활','용','품','분','리','배','출'])">
-                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
-                  <span>[레레]레레- / [미미]미미-</span>
-                  <i class="fa-solid fa-play text-[10px]"></i>
-                </div>
-                <p class="font-bold text-orange-600">재-활-용-품- / 분-리-배-출-</p>
-              </div>
-              <div class="p-2 rounded-lg hover:bg-orange-50 cursor-pointer transition-colors" onclick="playSingleLine([64, 62, 60, 62, 64, 64, 64], [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8], ['외','래','종','발','견','하','면'])">
-                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
-                  <span>미레도레 / 미미미-</span>
-                  <i class="fa-solid fa-play text-[10px]"></i>
-                </div>
-                <p class="font-bold text-orange-600">외-래-종-발 / 견-하-면-</p>
-              </div>
-              <div class="p-2 rounded-lg hover:bg-orange-50 cursor-pointer transition-colors" onclick="playSingleLine([62, 62, 64, 62, 60], [0.4, 0.4, 0.4, 0.4, 0.8], ['기','관','에','신','고'])">
-                <div class="flex justify-between items-center text-gray-400 text-xs font-sans">
-                  <span>레레 / 미레도-</span>
-                  <i class="fa-solid fa-play text-[10px]"></i>
-                </div>
-                <p class="font-bold text-orange-600">기-관- / 에-신-고-</p>
-              </div>
-            </div>
-          </div>
-          <div class="mt-6 pt-4 border-t border-gray-100 text-xs text-gray-500 font-sans">
-            💡 일상속 분리배출 요령 및 위해 외래종 전파 제한 실천 행동
-          </div>
-        </div>
+    <!-- JS Core Engine -->
+    <script>
+        // Core Database
+        const STUDY_DATA = [
+            // INDIA
+            {
+                id: "in_1_1",
+                country: "india",
+                countryKo: "인도",
+                theme: "읽기",
+                code: "1-1",
+                original: "인도는 0~14세 유소년층 인구 비율이 높다.",
+                words: [
+                    { text: "인도는", isJosa: true, base: "인도", josa: "는" },
+                    { text: "0~14세", isJosa: false, base: "0~14세" },
+                    { text: "유소년층", isJosa: false, base: "유소년층" },
+                    { text: "인구", isJosa: false, base: "인구" },
+                    { text: "비율이", isJosa: true, base: "비율", josa: "이" },
+                    { text: "높다.", isJosa: true, base: "높", josa: "다." }
+                ],
+                step1Mask: [false, false, true, false, false, false],
+                step2Mask: [false, false, true, true, true, false],
+                step3Mask: [false, true, true, true, true, false]
+            },
+            {
+                id: "in_1_2",
+                country: "india",
+                countryKo: "인도",
+                theme: "읽기",
+                code: "1-2",
+                original: "15~64세 청장년층 인구 비율이 높다.",
+                words: [
+                    { text: "15~64세", isJosa: false, base: "15~64세" },
+                    { text: "청장년층", isJosa: false, base: "청장년층" },
+                    { text: "인구", isJosa: false, base: "인구" },
+                    { text: "비율이", isJosa: true, base: "비율", josa: "이" },
+                    { text: "높다.", isJosa: true, base: "높", josa: "다." }
+                ],
+                step1Mask: [false, true, false, false, false],
+                step2Mask: [false, true, true, true, false],
+                step3Mask: [true, true, true, true, false]
+            },
+            {
+                id: "in_2_1",
+                country: "india",
+                countryKo: "인도",
+                theme: "유형 분석",
+                code: "2-1",
+                original: "생산 활동을 하는 청장년층 인구가 많아 경제 성장 잠재력이 높다.",
+                words: [
+                    { text: "생산", isJosa: false, base: "생산" },
+                    { text: "활동을", isJosa: true, base: "활동", josa: "을" },
+                    { text: "하는", isJosa: true, base: "하", josa: "는" },
+                    { text: "청장년층", isJosa: false, base: "청장년층" },
+                    { text: "인구가", isJosa: true, base: "인구", josa: "가" },
+                    { text: "많아", isJosa: true, base: "많", josa: "아" },
+                    { text: "경제", isJosa: false, base: "경제" },
+                    { text: "성장", isJosa: false, base: "성장" },
+                    { text: "잠재력이", isJosa: true, base: "잠재력", josa: "이" },
+                    { text: "높다.", isJosa: true, base: "높", josa: "다." }
+                ],
+                step1Mask: [false, false, false, false, false, false, true, true, true, false],
+                step2Mask: [true, true, false, true, false, false, true, true, true, false],
+                step3Mask: [true, true, false, true, true, false, true, true, true, true]
+            },
+            {
+                id: "in_2_2",
+                country: "india",
+                countryKo: "인도",
+                theme: "유형 분석",
+                code: "2-2",
+                original: "인구가 빠르게 증가하고 있으며 젊은 인구 구조를 가지고 있다.",
+                words: [
+                    { text: "인구가", isJosa: true, base: "인구", josa: "가" },
+                    { text: "빠르게", isJosa: true, base: "빠르", josa: "게" },
+                    { text: "증가하고", isJosa: true, base: "증가하", josa: "고" },
+                    { text: "있으며", isJosa: true, base: "있", josa: "으며" },
+                    { text: "젊은", isJosa: true, base: "젊", josa: "은" },
+                    { text: "인구", isJosa: false, base: "인구" },
+                    { text: "구조를", isJosa: true, base: "구조", josa: "를" },
+                    { text: "가지고", isJosa: true, base: "가지", josa: "고" },
+                    { text: "있다.", isJosa: true, base: "있", josa: "다." }
+                ],
+                step1Mask: [false, false, true, false, false, false, true, false, false],
+                step2Mask: [true, false, true, false, true, true, true, false, false],
+                step3Mask: [true, true, true, false, true, true, true, true, false]
+            },
+            {
+                id: "in_3_1",
+                country: "india",
+                countryKo: "인도",
+                theme: "사회 문제",
+                code: "3-1",
+                original: "대학 입시 경쟁이 치열하고 일자리가 부족하다.",
+                words: [
+                    { text: "대학", isJosa: false, base: "대학" },
+                    { text: "입시", isJosa: false, base: "입시" },
+                    { text: "경쟁이", isJosa: true, base: "경쟁", josa: "이" },
+                    { text: "치열하고", isJosa: true, base: "치열하", josa: "고" },
+                    { text: "일자리가", isJosa: true, base: "일자리", josa: "가" },
+                    { text: "부족하다.", isJosa: true, base: "부족하", josa: "다." }
+                ],
+                step1Mask: [false, false, true, false, true, false],
+                step2Mask: [true, true, true, false, true, false],
+                step3Mask: [true, true, true, true, true, false]
+            },
+            {
+                id: "in_3_2",
+                country: "india",
+                countryKo: "인도",
+                theme: "사회 문제",
+                code: "3-2",
+                original: "도로나 학교 같은 사회 기반 시설이 부족하다.",
+                words: [
+                    { text: "도로나", isJosa: true, base: "도로", josa: "나" },
+                    { text: "학교", isJosa: false, base: "학교" },
+                    { text: "같은", isJosa: true, base: "같", josa: "은" },
+                    { text: "사회", isJosa: false, base: "사회" },
+                    { text: "기반", isJosa: false, base: "기반" },
+                    { text: "시설이", isJosa: true, base: "시설", josa: "이" },
+                    { text: "부족하다.", isJosa: true, base: "부족하", josa: "다." }
+                ],
+                step1Mask: [false, false, false, true, true, true, false],
+                step2Mask: [true, true, false, true, true, true, false],
+                step3Mask: [true, true, true, true, true, true, false]
+            },
 
-      </div>
+            // JAPAN
+            {
+                id: "jp_1_1",
+                country: "japan",
+                countryKo: "일본",
+                theme: "읽기",
+                code: "1-1",
+                original: "일본은 0~14세 유소년층의 인구 비율이 낮다.",
+                words: [
+                    { text: "일본은", isJosa: true, base: "일본", josa: "은" },
+                    { text: "0~14세", isJosa: false, base: "0~14세" },
+                    { text: "유소년층의", isJosa: true, base: "유소년층", josa: "의" },
+                    { text: "인구", isJosa: false, base: "인구" },
+                    { text: "비율이", isJosa: true, base: "비율", josa: "이" },
+                    { text: "낮다.", isJosa: true, base: "낮", josa: "다." }
+                ],
+                step1Mask: [false, false, true, false, false, false],
+                step2Mask: [false, false, true, true, true, false],
+                step3Mask: [false, true, true, true, true, false]
+            },
+            {
+                id: "jp_1_2",
+                country: "japan",
+                countryKo: "일본",
+                theme: "읽기",
+                code: "1-2",
+                original: "65세 이상의 노년층 인구 비율이 높다.",
+                words: [
+                    { text: "65세", isJosa: false, base: "65세" },
+                    { text: "이상의", isJosa: true, base: "이상", josa: "의" },
+                    { text: "노년층", isJosa: false, base: "노년층" },
+                    { text: "인구", isJosa: false, base: "인구" },
+                    { text: "비율이", isJosa: true, base: "비율", josa: "이" },
+                    { text: "높다.", isJosa: true, base: "높", josa: "다." }
+                ],
+                step1Mask: [false, false, true, false, false, false],
+                step2Mask: [false, true, true, true, false, false],
+                step3Mask: [true, true, true, true, true, false]
+            },
+            {
+                id: "jp_2_1",
+                country: "japan",
+                countryKo: "일본",
+                theme: "유형 분석",
+                code: "2-1",
+                original: "결혼과 자녀 양육에 대한 가치관의 변화로 저출산 현상이 심각하다.",
+                words: [
+                    { text: "결혼과", isJosa: true, base: "결혼", josa: "과" },
+                    { text: "자녀", isJosa: false, base: "자녀" },
+                    { text: "양육에", isJosa: true, base: "양육", josa: "에" },
+                    { text: "대한", isJosa: true, base: "대", josa: "한" },
+                    { text: "가치관의", isJosa: true, base: "가치관", josa: "의" },
+                    { text: "변화로", isJosa: true, base: "변화", josa: "로" },
+                    { text: "저출산", isJosa: false, base: "저출산" },
+                    { text: "현상이", isJosa: true, base: "현상", josa: "이" },
+                    { text: "심각하다.", isJosa: true, base: "심각하", josa: "다." }
+                ],
+                step1Mask: [false, false, false, false, true, false, true, false, false],
+                step2Mask: [true, true, false, false, true, true, true, true, false],
+                step3Mask: [true, true, true, true, true, true, true, true, false]
+            },
+            {
+                id: "jp_2_2",
+                country: "japan",
+                countryKo: "일본",
+                theme: "유형 분석",
+                code: "2-2",
+                original: "초고령 사회로 진입하였으며 평균 수명이 매우 높다.",
+                words: [
+                    { text: "초고령", isJosa: false, base: "초고령" },
+                    { text: "사회로", isJosa: true, base: "사회", josa: "로" },
+                    { text: "진입하였으며", isJosa: true, base: "진입하", josa: "였으며" },
+                    { text: "평균", isJosa: false, base: "평균" },
+                    { text: "수명이", isJosa: true, base: "수명", josa: "이" },
+                    { text: "매우", isJosa: false, base: "매우" },
+                    { text: "높다.", isJosa: true, base: "높", josa: "다." }
+                ],
+                step1Mask: [true, false, false, false, true, false, false],
+                step2Mask: [true, true, false, true, true, false, false],
+                step3Mask: [true, true, true, true, true, true, false]
+            },
+            {
+                id: "jp_3_1",
+                country: "japan",
+                countryKo: "일본",
+                theme: "사회 문제",
+                code: "3-1",
+                original: "저출산, 고령화 현상으로 노동력이 부족하여 경제 성장이 둔화될 우려가 있다.",
+                words: [
+                    { text: "저출산,", isJosa: false, base: "저출산," },
+                    { text: "고령화", isJosa: false, base: "고령화" },
+                    { text: "현상으로", isJosa: true, base: "현상", josa: "으로" },
+                    { text: "노동력이", isJosa: true, base: "노동력", josa: "이" },
+                    { text: "부족하여", isJosa: true, base: "부족하", josa: "여" },
+                    { text: "경제", isJosa: false, base: "경제" },
+                    { text: "성장이", isJosa: true, base: "성장", josa: "이" },
+                    { text: "둔화될", isJosa: true, base: "둔화되", josa: "ㄹ" },
+                    { text: "우려가", isJosa: true, base: "우려", josa: "가" },
+                    { text: "있다.", isJosa: true, base: "있", josa: "다." }
+                ],
+                step1Mask: [true, true, false, false, false, false, false, true, false, false],
+                step2Mask: [true, true, false, true, false, true, true, true, false, false],
+                step3Mask: [true, true, true, true, true, true, true, true, true, false]
+            },
+            {
+                id: "jp_3_2",
+                country: "japan",
+                countryKo: "일본",
+                theme: "사회 문제",
+                code: "3-2",
+                original: "노인 부양 부담이 증가하여 세대 간 갈등이 심화된다.",
+                words: [
+                    { text: "노인", isJosa: false, base: "노인" },
+                    { text: "부양", isJosa: false, base: "부양" },
+                    { text: "부담이", isJosa: true, base: "부담", josa: "이" },
+                    { text: "증가하여", isJosa: true, base: "증가하", josa: "여" },
+                    { text: "세대", isJosa: false, base: "세대" },
+                    { text: "간", isJosa: false, base: "간" },
+                    { text: "갈등이", isJosa: true, base: "갈등", josa: "이" },
+                    { text: "심화된다.", isJosa: true, base: "심화되", josa: "ㄴ다." }
+                ],
+                step1Mask: [false, false, true, false, false, false, true, false],
+                step2Mask: [true, true, true, false, false, false, true, true],
+                step3Mask: [true, true, true, true, true, true, true, true]
+            },
 
-      <!-- 음표 비주얼라이저 -->
-      <div class="bg-gray-900 rounded-3xl p-6 text-white shadow-md flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-4 h-4 bg-red-500 rounded-full animate-ping font-sans"></div>
-          <div>
-            <h4 class="font-bold text-sm text-gray-400 font-sans">실시간 음표 매칭 플레이어</h4>
-            <div id="playing-lyric" class="text-2xl font-bold font-cute text-yellow-300 mt-1">구절을 누르거나 전체 재생을 눌러보세요!</div>
-          </div>
-        </div>
-        <div class="flex gap-1" id="visualizer-bars">
-          <span class="w-1 h-8 bg-blue-400 rounded-full inline-block transition-all duration-100"></span>
-          <span class="w-1 h-12 bg-green-400 rounded-full inline-block transition-all duration-100"></span>
-          <span class="w-1 h-6 bg-yellow-400 rounded-full inline-block transition-all duration-100"></span>
-          <span class="w-1 h-10 bg-red-400 rounded-full inline-block transition-all duration-100"></span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== TAB 2: 교과 핵심 정리 (핵심 키워드 초성 퀴즈형) ==================== -->
-    <section id="tab-study" class="tab-content space-y-6">
-      
-      <!-- 퀴즈 일괄 조작 헤더 -->
-      <div class="bg-white rounded-3xl p-5 shadow-sm border border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
-        <div>
-          <h4 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-spell-check text-blue-500 mr-1"></i> 핵심 키워드 가리기 학습</h4>
-          <p class="text-gray-500 text-xs sm:text-sm mt-1">교과문장의 중요한 주 핵심 단어들만 초성으로 가렸습니다.</p>
-        </div>
-        <div class="flex gap-2">
-          <button onclick="revealAllBlanks()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-4 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-sm">
-            전체 정답 보기
-          </button>
-          <button onclick="hideAllBlanks()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold px-4 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-sm">
-            전체 초성 가리기
-          </button>
-        </div>
-      </div>
-
-      <!-- 1단원 정보 -->
-      <div class="bg-white rounded-3xl p-6 shadow-sm border border-emerald-100 flex flex-col md:flex-row gap-6 items-start md:items-center">
-        <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl shrink-0">
-          <i class="fa-solid fa-seedling"></i>
-        </div>
-        <div class="space-y-3 w-full">
-          <div class="flex items-center gap-2">
-            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-1 rounded font-sans">단원 1</span>
-            <h3 class="text-lg font-bold text-gray-800">1. 생물다양성 보전의 필요성</h3>
-          </div>
-          <ul class="list-none space-y-3 text-gray-700 text-sm md:text-base leading-relaxed">
-            <li class="flex flex-wrap items-center gap-1">
-              • 생물다양성이 클수록 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="생태계" data-chosung="ㅅ,ㅌ,ㄱ"></span>가 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="안정" data-chosung="ㅇ,ㅈ"></span>적으로 유지된다.
-            </li>
-            <li class="flex flex-wrap items-center gap-1">
-              • 생물에서 여러 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="원료" data-chosung="ㅇ,ㄹ"></span>를 얻고, 자연에서 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="건강" data-chosung="ㄱ,ㄱ"></span>을 얻는다.
-            </li>
-            <li class="flex flex-wrap items-center gap-1">
-              • 모든 생물은 생태계 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="구성원" data-chosung="ㄱ,ㅅ,ㅇ"></span>으로서 그 자체로 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="소중" data-chosung="ㅅ,ㅈ"></span>하다.
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- 2단원 정보 -->
-      <div class="bg-white rounded-3xl p-6 shadow-sm border border-purple-100 flex flex-col md:flex-row gap-6 items-start md:items-center">
-        <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center text-2xl shrink-0">
-          <i class="fa-solid fa-building-columns"></i>
-        </div>
-        <div class="space-y-3 w-full">
-          <div class="flex items-center gap-2">
-            <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1 rounded font-sans">단원 2</span>
-            <h3 class="text-lg font-bold text-gray-800">2. 생물다양성 유지를 위한 사회적 차원의 노력</h3>
-          </div>
-          <ul class="list-none space-y-3 text-gray-700 text-sm md:text-base leading-relaxed">
-            <li class="flex flex-wrap items-center gap-1">
-              • 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="생태통로" data-chosung="ㅅ,ㅌ,ㅌ,ㄹ"></span>를 건설하거나 국립공원같은 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="보호구역" data-chosung="ㅂ,ㅎ,ㄱ,ㅇ"></span>을 지정한다.
-            </li>
-            <li class="flex flex-wrap items-center gap-1">
-              • 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="멸종 위기 생물" data-chosung="ㅁ,ㅈ, ,ㅇ,ㄱ, ,ㅅ,ㅁ"></span>을 지정하고 서식지를 보호하며 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="복원" data-chosung="ㅂ,ㅇ"></span> 사업을 진행한다.
-            </li>
-            <li class="flex flex-wrap items-center gap-1">
-              • 생물다양성을 유지하는 방법을 소개하고 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="캠페인" data-chosung="ㅋ,ㅍ,ㅇ"></span> 활동을 장려한다.
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- 3단원 정보 -->
-      <div class="bg-white rounded-3xl p-6 shadow-sm border border-orange-100 flex flex-col md:flex-row gap-6 items-start md:items-center">
-        <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center text-2xl shrink-0">
-          <i class="fa-solid fa-person-running"></i>
-        </div>
-        <div class="space-y-3 w-full">
-          <div class="flex items-center gap-2">
-            <span class="bg-orange-100 text-orange-800 text-xs font-bold px-2 py-1 rounded font-sans">단원 3</span>
-            <h3 class="text-lg font-bold text-gray-800">3. 생물다양성 유지를 위한 개인적 차원의 노력</h3>
-          </div>
-          <ul class="list-none space-y-3 text-gray-700 text-sm md:text-base leading-relaxed">
-            <li class="flex flex-wrap items-center gap-1">
-              • 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="자연" data-chosung="ㅈ,ㅇ"></span>을 훼손하지 않고 보호한다.
-            </li>
-            <li class="flex flex-wrap items-center gap-1">
-              • 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="재활용품" data-chosung="ㅈ,ㅎ,ㅇ,ㅍ"></span>을 올바르게 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="분리배출" data-chosung="ㅂ,ㄹ,ㅂ,ㅊ"></span>하여 환경오염을 줄인다.
-            </li>
-            <li class="flex flex-wrap items-center gap-1">
-              • 생활에서 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="외래종" data-chosung="ㅇ,ㄹ,ㅈ"></span>을 발견하면 관련 기관에 
-              <span class="word-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-1" data-word="신고" data-chosung="ㅅ,ㄱ"></span>한다.
-            </li>
-          </ul>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ==================== TAB 3: 실전 연습 (전체 초성 퀴즈형 - 조사 및 연결/서술 어미 노출 적용) ==================== -->
-    <section id="tab-practice" class="tab-content space-y-6">
-      
-      <!-- 실전 연습 일괄 조작 헤더 -->
-      <div class="bg-white rounded-3xl p-5 shadow-sm border border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
-        <div>
-          <h4 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-graduation-cap text-orange-500 mr-1"></i> 실전 연습 (전체 초성 모드)</h4>
-          <p class="text-gray-500 text-xs sm:text-sm mt-1">조사 및 연결 어미(하거나, 한다, 하여, 하면, 하고 등)를 제외한 단어들을 가렸습니다.</p>
-        </div>
-        <div class="flex gap-2">
-          <button onclick="revealAllPractice()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-sm">
-            전체 정답 보기
-          </button>
-          <button onclick="hideAllPractice()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold px-4 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-sm">
-            전체 초성 가리기
-          </button>
-        </div>
-      </div>
-
-      <!-- 1단원 전체 초성 퀴즈 -->
-      <div class="bg-white rounded-3xl p-6 shadow-sm border border-emerald-100 flex flex-col md:flex-row gap-6 items-start md:items-center">
-        <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl shrink-0">
-          <i class="fa-solid fa-seedling"></i>
-        </div>
-        <div class="space-y-3 w-full">
-          <div class="flex items-center gap-2">
-            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-1 rounded font-sans">실전 1</span>
-            <h3 class="text-lg font-bold text-gray-800">1. 생물다양성 보전의 필요성</h3>
-          </div>
-          <ul class="list-none space-y-3 text-gray-700 text-sm md:text-base leading-relaxed">
-            <li class="flex flex-wrap items-center gap-1">
-              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생물다양성" data-chosung="ㅅ,ㅁ,ㄷ,ㅇ,ㅅ"></span>이 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="클" data-chosung="ㅋ"></span>수록 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생태계" data-chosung="ㅅ,ㅌ,ㄱ"></span>가 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="안정" data-chosung="ㅇ,ㅈ"></span>적으로 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="유지" data-chosung="ㅇ,ㅈ"></span>된다.
-            </li>
-            <li class="flex flex-wrap items-center gap-1">
-              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생물" data-chosung="ㅅ,ㅁ"></span>에서 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="여러" data-chosung="ㅇ,ㄹ"></span> 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="원료" data-chosung="ㅇ,ㄹ"></span>를 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="얻" data-chosung="ㅇ"></span>고, 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="자연" data-chosung="ㅈ,ㅇ"></span>에서 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="건강" data-chosung="ㄱ,ㄱ"></span>을 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="얻" data-chosung="ㅇ"></span>는다.
-            </li>
-            <li class="flex flex-wrap items-center gap-1">
-              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="모든" data-chosung="ㅁ,ㄷ"></span> 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생물" data-chosung="ㅅ,ㅁ"></span>은 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생태계" data-chosung="ㅅ,ㅌ,ㄱ"></span> 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="구성원" data-chosung="ㄱ,ㅅ,ㅇ"></span>으로서 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="그" data-chosung="ㄱ"></span> 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="자체" data-chosung="ㅈ,ㅊ"></span>로 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="소중" data-chosung="ㅅ,ㅈ"></span>하다.
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- 2단원 전체 초성 퀴즈 -->
-      <div class="bg-white rounded-3xl p-6 shadow-sm border border-purple-100 flex flex-col md:flex-row gap-6 items-start md:items-center">
-        <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center text-2xl shrink-0">
-          <i class="fa-solid fa-building-columns"></i>
-        </div>
-        <div class="space-y-3 w-full">
-          <div class="flex items-center gap-2">
-            <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1 rounded font-sans">실전 2</span>
-            <h3 class="text-lg font-bold text-gray-800">2. 생물다양성 유지를 위한 사회적 차원의 노력</h3>
-          </div>
-          <ul class="list-none space-y-3 text-gray-700 text-sm md:text-base leading-relaxed">
-            <li class="flex flex-wrap items-center gap-1">
-              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생태통로" data-chosung="ㅅ,ㅌ,ㅌ,ㄹ"></span>를 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="건설" data-chosung="ㄱ,ㅅ"></span>하거나 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="국립공원" data-chosung="ㄱ,ㄹ,ㄱ,ㅇ"></span>같은 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="보호구역" data-chosung="ㅂ,ㅎ,ㄱ,ㅇ"></span>을 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="지정" data-chosung="ㅈ,ㅈ"></span>한다.
-            </li>
-            <li class="flex flex-wrap items-center gap-1">
-              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="멸종" data-chosung="ㅁ,ㅈ"></span> 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="위기" data-chosung="ㅇ,ㄱ"></span> 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생물" data-chosung="ㅅ,ㅁ"></span>을 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="지정" data-chosung="ㅈ,ㅈ"></span>하고 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="서식지" data-chosung="ㅅ,ㅅ,ㅈ"></span>를 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="보호" data-chosung="ㅂ,ㅎ"></span>하며 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="복원" data-chosung="ㅂ,ㅇ"></span> 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="사업" data-chosung="ㅅ,ㅇ"></span>을 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="진행" data-chosung="ㅈ,ㅎ"></span>한다.
-            </li>
-            <li class="flex flex-wrap items-center gap-1">
-              • 생물다양성을 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="유지" data-chosung="ㅇ,ㅈ"></span>하는 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="방법" data-chosung="ㅂ,ㅂ"></span>을 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="소개" data-chosung="ㅅ,ㄱ"></span>하고 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="캠페인" data-chosung="ㅋ,ㅍ,ㅇ"></span> 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="활동" data-chosung="ㅎ,ㄷ"></span>을 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="장려" data-chosung="ㅈ,ㄹ"></span>한다.
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- 3단원 전체 초성 퀴즈 -->
-      <div class="bg-white rounded-3xl p-6 shadow-sm border border-orange-100 flex flex-col md:flex-row gap-6 items-start md:items-center">
-        <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center text-2xl shrink-0">
-          <i class="fa-solid fa-person-running"></i>
-        </div>
-        <div class="space-y-3 w-full">
-          <div class="flex items-center gap-2">
-            <span class="bg-orange-100 text-orange-800 text-xs font-bold px-2 py-1 rounded font-sans">실전 3</span>
-            <h3 class="text-lg font-bold text-gray-800">3. 생물다양성 유지를 위한 개인적 차원의 노력</h3>
-          </div>
-          <ul class="list-none space-y-3 text-gray-700 text-sm md:text-base leading-relaxed">
-            <li class="flex flex-wrap items-center gap-1">
-              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="자연" data-chosung="ㅈ,ㅇ"></span>을 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="훼손" data-chosung="ㅎ,ㅅ"></span>하지 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="않" data-chosung="ㅇ"></span>고 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="보호" data-chosung="ㅂ,ㅎ"></span>한다.
-            </li>
-            <li class="flex flex-wrap items-center gap-1">
-              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="재활용품" data-chosung="ㅈ,ㅎ,ㅇ,ㅍ"></span>을 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="올바르게" data-chosung="ㅇ,ㅂ,ㄹ,ㄱ"></span> 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="분리배출" data-chosung="ㅂ,ㄹ,ㅂ,ㅊ"></span>하여 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="환경오염" data-chosung="ㅎ,ㄱ,ㅇ,ㅇ"></span>을 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="줄" data-chosung="ㅈ"></span>인다.
-            </li>
-            <li class="flex flex-wrap items-center gap-1">
-              • <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="생활" data-chosung="ㅅ,ㅎ"></span>에서 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="외래종" data-chosung="ㅇ,ㄹ,ㅈ"></span>을 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="발견" data-chosung="ㅂ,ㄱ"></span>하면 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="관련" data-chosung="ㄱ,ㄹ"></span> 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="기관" data-chosung="ㄱ,ㄱ"></span>에 
-              <span class="practice-blank inline-flex gap-0.5 cursor-pointer select-none align-middle mx-0.5" data-word="신고" data-chosung="ㅅ,ㄱ"></span>한다.
-            </li>
-          </ul>
-        </div>
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- 하단 퀵 모바일 내비게이션 -->
-  <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-2xl z-50 md:hidden">
-    <div class="flex justify-around items-center py-2">
-      <button onclick="switchTab('song')" class="mobile-nav-btn text-blue-500 flex flex-col items-center gap-1">
-        <i class="fa-solid fa-music text-xl"></i>
-        <span class="text-xs font-bold">암기송</span>
-      </button>
-      <button onclick="switchTab('study')" class="mobile-nav-btn text-gray-400 flex flex-col items-center gap-1">
-        <i class="fa-solid fa-book-open text-xl"></i>
-        <span class="text-xs font-bold">핵심개념</span>
-      </button>
-      <button onclick="switchTab('practice')" class="mobile-nav-btn text-gray-400 flex flex-col items-center gap-1">
-        <i class="fa-solid fa-graduation-cap text-xl"></i>
-        <span class="text-xs font-bold">실전연습</span>
-      </button>
-    </div>
-  </footer>
-
-  <script>
-    // ------------------------------------------------------------
-    // 1. 소리 재생 시스템 (Web Audio API를 이용한 음성 및 피아노 음 합성)
-    // ------------------------------------------------------------
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    // 피아노 건반 주파수 매핑 (MIDI Note 번호 기준)
-    function getFrequency(note) {
-      return 440 * Math.pow(2, (note - 69) / 12);
-    }
-
-    // 소리(피아노톤) 한 음 재생 함수
-    function playNote(note, duration, startTime) {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      
-      osc.type = 'triangle'; // 동요와 어울리는 깨끗한 트라이앵글파
-      osc.frequency.value = getFrequency(note);
-      
-      // 부드러운 피아노식 소리 페이드 아웃 효과 적용
-      gain.gain.setValueAtTime(0, startTime);
-      gain.gain.linearRampToValueAtTime(0.3, startTime + 0.05);
-      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
-      
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      
-      osc.start(startTime);
-      osc.stop(startTime + duration);
-    }
-
-    // 1~3절 커스텀 멜로디 정보 (수정된 가사 음절 쪼개기 및 정밀 장단음 반영)
-    const melodyData = {
-      1: {
-        notes: [
-          64, 62, 60, 62, 64, 64, 64, // 다 양 해 야 안 정 돼
-          62, 62, 62, 64, 64, 64,     // 원 료 와 건 강 줘
-          64, 62, 60, 62, 64, 64, 64, // 구 성 원 들 모 두 다
-          62, 62, 64, 62, 60          // 자 체 로 소 중
-        ],
-        durations: [
-          0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8,
-          0.4, 0.4, 0.8, 0.4, 0.4, 0.8,
-          0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8,
-          0.4, 0.4, 0.4, 0.4, 0.8
-        ]
-      },
-      2: {
-        notes: [
-          64, 62, 60, 62, 64, 64, 64, // 생 태 통 로 만 들 고
-          62, 62, 62, 62, 64, 64, 64, // [보 호] 구 역 지 정 해
-          64, 64, 64, 62, 60, 62, 64, 64, 64, // [멸 종][위 기] 생 물 복 원 해
-          62, 62, 64, 62, 60          // 캠 페 인 하 자
-        ],
-        durations: [
-          0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8,
-          0.2, 0.2, 0.4, 0.8, 0.4, 0.4, 0.8,
-          0.2, 0.2, 0.2, 0.2, 0.4, 0.4, 0.4, 0.4, 0.8,
-          0.4, 0.4, 0.4, 0.4, 0.8
-        ]
-      },
-      3: {
-        notes: [
-          64, 62, 60, 62, 64, 64, 64, // 자 연 훼 손 안 하 고
-          62, 62, 62, 62, 64, 64, 64, 64, // [재 활] 용 품 [분 리] 배 출
-          64, 62, 60, 62, 64, 64, 64, // 외 래 종 발 견 하 면
-          62, 62, 64, 62, 60          // 기 관 에 신 고
-        ],
-        durations: [
-          0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8,
-          0.2, 0.2, 0.4, 0.8, 0.2, 0.2, 0.4, 0.8,
-          0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.8,
-          0.4, 0.4, 0.4, 0.4, 0.8
-        ]
-      }
-    };
-
-    // 정밀 가사 매핑 정보
-    const lyrics = {
-      1: ["다", "양", "해", "야", "안", "정", "돼", "원", "료", "와", "건", "강", "줘", "구", "성", "원", "들", "모", "두", "다", "자", "체", "로", "소", "중"],
-      2: ["생", "태", "통", "로", "만", "들", "고", "보", "호", "구", "역", "지", "정", "해", "멸", "종", "위", "기", "생", "물", "복", "원", "해", "캠", "페", "인", "하", "자"],
-      3: ["자", "연", "훼", "손", "안", "하", "고", "재", "활", "용", "품", "분", "리", "배", "출", "외", "래", "종", "발", "견", "하", "면", "기", "관", "에", "신", "고"]
-    };
-
-    let activeTimers = [];
-
-    // 활성화된 타이머 중지 함수
-    function stopSound() {
-      activeTimers.forEach(t => clearTimeout(t));
-      activeTimers = [];
-      document.getElementById('playing-lyric').innerText = '구절을 누르거나 전체 재생을 눌러보세요!';
-    }
-
-    // 특정 가사 구절 클릭 시, 한 소절만 멜로디와 연주 가사 싱크 매칭
-    function playSingleLine(notes, durations, lineLyrics) {
-      stopSound();
-      audioCtx.resume();
-      let now = audioCtx.currentTime;
-      let totalDelay = 0;
-
-      notes.forEach((note, index) => {
-        const duration = durations[index] || 0.4;
-        const delayMs = totalDelay * 1000;
-        
-        // 사운드 트리거 예약
-        playNote(note, duration, now + totalDelay);
-        
-        // UI 연주 가사 하이라이팅 예약
-        const timer = setTimeout(() => {
-          let displayedText = "";
-          for(let i=0; i<=index; i++) {
-            displayedText += (lineLyrics[i] || "") + " ";
-          }
-          document.getElementById('playing-lyric').innerText = displayedText;
-          animateVisualizer();
-        }, delayMs);
-        
-        activeTimers.push(timer);
-        totalDelay += duration;
-      });
-    }
-
-    // 단독 1/2/3절 연속 완창 재생 함수
-    function playMelody(stanza) {
-      stopSound();
-      audioCtx.resume();
-      let now = audioCtx.currentTime;
-      let totalDelay = 0;
-      const stanzaLyrics = lyrics[stanza];
-      const notes = melodyData[stanza].notes;
-      const durations = melodyData[stanza].durations;
-
-      notes.forEach((note, index) => {
-        const duration = durations[index];
-        const delayMs = totalDelay * 1000;
-        
-        playNote(note, duration, now + totalDelay);
-        
-        const timer = setTimeout(() => {
-          // 흐르는 가사 렌더링
-          let progress = "";
-          let startSlice = Math.max(0, index - 5);
-          for(let i = startSlice; i <= index; i++) {
-            progress += (stanzaLyrics[i] || "") + "-";
-          }
-          document.getElementById('playing-lyric').innerText = `[${stanza}절] ` + progress.slice(0, -1);
-          animateVisualizer();
-        }, delayMs);
-
-        activeTimers.push(timer);
-        totalDelay += duration;
-      });
-    }
-
-    // 1~3절 연속 풀 완창
-    function playFullSong() {
-      stopSound();
-      audioCtx.resume();
-      let now = audioCtx.currentTime;
-      let totalDelay = 0;
-
-      // 1절 -> 2절 -> 3절 순차 예약 재생
-      [1, 2, 3].forEach((stanza) => {
-        const stanzaLyrics = lyrics[stanza];
-        const notes = melodyData[stanza].notes;
-        const durations = melodyData[stanza].durations;
-        
-        notes.forEach((note, index) => {
-          const duration = durations[index];
-          const delayMs = totalDelay * 1000;
-          
-          playNote(note, duration, now + totalDelay);
-          
-          const timer = setTimeout(() => {
-            let progress = "";
-            let startSlice = Math.max(0, index - 5);
-            for(let i = startSlice; i <= index; i++) {
-              progress += (stanzaLyrics[i] || "") + "-";
+            // SAUDI ARABIA
+            {
+                id: "sa_1_1",
+                country: "saudi",
+                countryKo: "사우디아라비아",
+                theme: "읽기",
+                code: "1-1",
+                original: "사우디아라비아는 15~64세 청장년층 남성 인구가 특히 많다.",
+                words: [
+                    { text: "사우디아라비아는", isJosa: true, base: "사우디아라비아", josa: "는" },
+                    { text: "15~64세", isJosa: false, base: "15~64세" },
+                    { text: "청장년층", isJosa: false, base: "청장년층" },
+                    { text: "남성", isJosa: false, base: "남성" },
+                    { text: "인구가", isJosa: true, base: "인구", josa: "가" },
+                    { text: "특히", isJosa: false, base: "특히" },
+                    { text: "많다.", isJosa: true, base: "많", josa: "다." }
+                ],
+                step1Mask: [false, false, false, true, false, false, false],
+                step2Mask: [false, true, true, true, false, false, false],
+                step3Mask: [true, true, true, true, true, false, false]
+            },
+            {
+                id: "sa_1_2",
+                country: "saudi",
+                countryKo: "사우디아라비아",
+                theme: "읽기",
+                code: "1-2",
+                original: "65세 이상의 노년층 비율이 낮다.",
+                words: [
+                    { text: "65세", isJosa: false, base: "65세" },
+                    { text: "이상의", isJosa: true, base: "이상", josa: "의" },
+                    { text: "노년층", isJosa: false, base: "노년층" },
+                    { text: "비율이", isJosa: true, base: "비율", josa: "이" },
+                    { text: "낮다.", isJosa: true, base: "낮", josa: "다." }
+                ],
+                step1Mask: [false, false, true, false, false],
+                step2Mask: [false, true, true, true, false],
+                step3Mask: [true, true, true, true, false]
+            },
+            {
+                id: "sa_2_1",
+                country: "saudi",
+                countryKo: "사우디아라비아",
+                theme: "유형 분석",
+                code: "2-1",
+                original: "석유 개발로 인한 외국인 남성 노동자가 유입되었다.",
+                words: [
+                    { text: "석유", isJosa: false, base: "석유" },
+                    { text: "개발로", isJosa: true, base: "개발", josa: "로" },
+                    { text: "인한", isJosa: true, base: "인", josa: "한" },
+                    { text: "외국인", isJosa: false, base: "외국인" },
+                    { text: "남성", isJosa: false, base: "남성" },
+                    { text: "노동자가", isJosa: true, base: "노동자", josa: "가" },
+                    { text: "유입되었다.", isJosa: true, base: "유입되", josa: "었다." }
+                ],
+                step1Mask: [true, false, false, true, false, false, false],
+                step2Mask: [true, true, false, true, true, true, false],
+                step3Mask: [true, true, true, true, true, true, true]
+            },
+            {
+                id: "sa_2_2",
+                country: "saudi",
+                countryKo: "사우디아라비아",
+                theme: "유형 분석",
+                code: "2-2",
+                original: "생산 가능 인구가 많아 경제 성장에 유리하다.",
+                words: [
+                    { text: "생산", isJosa: false, base: "생산" },
+                    { text: "가능", isJosa: false, base: "가능" },
+                    { text: "인구가", isJosa: true, base: "인구", josa: "가" },
+                    { text: "많아", isJosa: true, base: "많", josa: "아" },
+                    { text: "경제", isJosa: false, base: "경제" },
+                    { text: "성장에", isJosa: true, base: "성장", josa: "에" },
+                    { text: "유리하다.", isJosa: true, base: "유리하", josa: "다." }
+                ],
+                step1Mask: [true, true, false, false, false, false, false],
+                step2Mask: [true, true, true, false, true, true, false],
+                step3Mask: [true, true, true, true, true, true, false]
+            },
+            {
+                id: "sa_3_1",
+                country: "saudi",
+                countryKo: "사우디아라비아",
+                theme: "사회 문제",
+                code: "3-1",
+                original: "석유 고갈 이후 미래에 대한 불안감이 있다.",
+                words: [
+                    { text: "석유", isJosa: false, base: "석유" },
+                    { text: "고갈", isJosa: false, base: "고갈" },
+                    { text: "이후", isJosa: false, base: "이후" },
+                    { text: "미래에", isJosa: true, base: "미래", josa: "에" },
+                    { text: "대한", isJosa: true, base: "대", josa: "한" },
+                    { text: "불안감이", isJosa: true, base: "불안감", josa: "이" },
+                    { text: "있다.", isJosa: true, base: "있", josa: "다." }
+                ],
+                step1Mask: [false, true, false, false, false, true, false],
+                step2Mask: [true, true, false, true, false, true, false],
+                step3Mask: [true, true, true, true, true, true, false]
+            },
+            {
+                id: "sa_3_2",
+                country: "saudi",
+                countryKo: "사우디아라비아",
+                theme: "사회 문제",
+                code: "3-2",
+                original: "외국인 노동자와 자국민 간의 문화 차이로 인한 갈등이 발생한다.",
+                words: [
+                    { text: "외국인", isJosa: false, base: "외국인" },
+                    { text: "노동자와", isJosa: true, base: "노동자", josa: "와" },
+                    { text: "자국민", isJosa: false, base: "자국민" },
+                    { text: "간의", isJosa: true, base: "간", josa: "의" },
+                    { text: "문화", isJosa: false, base: "문화" },
+                    { text: "차이로", isJosa: true, base: "차이", josa: "로" },
+                    { text: "인한", isJosa: true, base: "인", josa: "한" },
+                    { text: "갈등이", isJosa: true, base: "갈등", josa: "이" },
+                    { text: "발생한다.", isJosa: true, base: "발생하", josa: "ㄴ다." }
+                ],
+                step1Mask: [false, false, false, false, true, true, false, true, false],
+                step2Mask: [true, true, false, false, true, true, false, true, false],
+                step3Mask: [true, true, true, true, true, true, true, true, false]
+            },
+            {
+                id: "sa_3_3",
+                country: "saudi",
+                countryKo: "사우디아라비아",
+                theme: "사회 문제",
+                code: "3-3",
+                original: "이주한 젊은 남성 노동자가 너무 많아서 성비 불균형 문제가 발생한다.",
+                words: [
+                    { text: "이주한", isJosa: true, base: "이주하", josa: "ㄴ" },
+                    { text: "젊은", isJosa: true, base: "젊", josa: "은" },
+                    { text: "남성", isJosa: false, base: "남성" },
+                    { text: "노동자가", isJosa: true, base: "노동자", josa: "가" },
+                    { text: "너무", isJosa: false, base: "너무" },
+                    { text: "많아서", isJosa: true, base: "많", josa: "아서" },
+                    { text: "성비", isJosa: false, base: "성비" },
+                    { text: "불균형", isJosa: false, base: "불균형" },
+                    { text: "문제가", isJosa: true, base: "문제", josa: "가" },
+                    { text: "발생한다.", isJosa: true, base: "발생하", josa: "ㄴ다." }
+                ],
+                step1Mask: [false, false, false, false, false, false, true, true, false, false],
+                step2Mask: [true, false, true, true, false, false, true, true, true, false],
+                step3Mask: [true, true, true, true, false, true, true, true, true, false]
             }
-            document.getElementById('playing-lyric').innerText = `[${stanza}절] ` + progress.slice(0, -1);
-            animateVisualizer();
-          }, delayMs);
+        ];
 
-          activeTimers.push(timer);
-          totalDelay += duration;
+        // State variables
+        let currentStep = 1;
+        let currentCountry = "all";
+        let currentMode = "study"; // study or test
+        let completedCards = new Set(); // saved card ids
+
+        // Korean Chosung Extractor
+        function getChosung(str) {
+            const cho = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+            let result = "";
+            for (let i = 0; i < str.length; i++) {
+                const code = str.charCodeAt(i) - 44032;
+                if (code > -1 && code < 11172) {
+                    result += cho[Math.floor(code / 588)];
+                } else {
+                    result += str.charAt(i); // Numbers, alphabets, marks remain
+                }
+            }
+            return result;
+        }
+
+        // Dynamically parse word string into specific sub-tokens (for highlighting/symbol bypass)
+        function tokenizeWord(text, isWordJosa, base, josa, countryKo) {
+            let tokens = [];
+            
+            // 1. Check if word starts with country name (subject)
+            if (text.startsWith(countryKo)) {
+                tokens.push({ text: countryKo, type: 'country' });
+                let rest = text.substring(countryKo.length);
+                if (rest) {
+                    tokens.push({ text: rest, type: 'josa' });
+                }
+                return tokens;
+            }
+
+            const isDigit = c => /[0-9]/.test(c);
+            const isSymbol = c => /[~.,\-:;!?,()\[\]\/]/.test(c);
+
+            let i = 0;
+            while (i < text.length) {
+                let char = text[i];
+                
+                if (isDigit(char)) {
+                    let numStr = "";
+                    while (i < text.length && isDigit(text[i])) {
+                        numStr += text[i];
+                        i++;
+                    }
+                    tokens.push({ text: numStr, type: 'number' });
+                } else if (isSymbol(char)) {
+                    tokens.push({ text: char, type: 'symbol' });
+                    i++;
+                } else {
+                    if (base && josa) {
+                        let remaining = text.substring(i);
+                        if (remaining.startsWith(base)) {
+                            tokens.push({ text: base, type: 'text' });
+                            i += base.length;
+                            
+                            let afterBase = text.substring(i);
+                            let josaPart = "";
+                            let symbolPart = "";
+                            for (let j = 0; j < afterBase.length; j++) {
+                                if (isSymbol(afterBase[j])) {
+                                    symbolPart = afterBase.substring(j);
+                                    break;
+                                } else {
+                                    josaPart += afterBase[j];
+                                }
+                            }
+                            if (josaPart) tokens.push({ text: josaPart, type: 'josa' });
+                            if (symbolPart) {
+                                for (let s of symbolPart) {
+                                    tokens.push({ text: s, type: 'symbol' });
+                                }
+                            }
+                            i += afterBase.length;
+                        } else {
+                            tokens.push({ text: char, type: 'text' });
+                            i++;
+                        }
+                    } else {
+                        let txtStr = "";
+                        while (i < text.length && !isDigit(text[i]) && !isSymbol(text[i])) {
+                            txtStr += text[i];
+                            i++;
+                        }
+                        tokens.push({ text: txtStr, type: 'text' });
+                    }
+                }
+            }
+            return tokens;
+        }
+
+        // Render Chosung Card Span dynamically applying token design rules
+        function createCardWordSpan(word, index, step, cardId) {
+            const card = STUDY_DATA.find(c => c.id === cardId);
+            
+            // Get sub-tokens of current word
+            const tokens = tokenizeWord(word.text, word.isJosa, word.base, word.josa, card.countryKo);
+            
+            // Check if entire word is masked in current step
+            let isWordMasked = false;
+            if (step === 1) {
+                isWordMasked = card.step1Mask[index] || false;
+            } else if (step === 2) {
+                isWordMasked = card.step2Mask[index] || false;
+            } else if (step === 3) {
+                isWordMasked = card.step3Mask[index] || false;
+            } else if (step === 4 || step === 5) {
+                isWordMasked = true; // All content terms masked
+            }
+
+            let wordHtml = `<span class="inline-flex items-center mx-0.5 flex-wrap">`;
+            
+            tokens.forEach(token => {
+                let shouldMaskToken = isWordMasked;
+                
+                // Specific token bypassing guidelines
+                if (token.type === 'country') {
+                    shouldMaskToken = false; // "나라이름은 그냥 제공해줘. 주어"
+                } else if (token.type === 'symbol') {
+                    shouldMaskToken = false; // "기호는 그냥 제공해줘. ~ 물결 말이야"
+                } else if (token.type === 'josa') {
+                    shouldMaskToken = false; // Josa or suffix ends are always unmasked plain text
+                }
+
+                if (!shouldMaskToken) {
+                    let fontClass = "text-slate-800 font-medium";
+                    if (token.type === 'country') {
+                        fontClass = "text-indigo-900 font-extrabold bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-200 shadow-sm";
+                    } else if (token.type === 'symbol') {
+                        fontClass = "text-slate-600 font-bold px-0.5";
+                    } else if (token.type === 'josa') {
+                        fontClass = "text-slate-500 font-normal";
+                    }
+                    wordHtml += `<span class="${fontClass} mx-0.5 text-sm sm:text-base">${token.text}</span>`;
+                } else {
+                    // Masked Token UI
+                    let bgClass = "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100";
+                    let placeholder = "";
+                    
+                    if (token.type === 'text') {
+                        if (step === 5) {
+                            // Empty box letters representation
+                            let boxes = "";
+                            for(let i=0; i<token.text.length; i++) {
+                                boxes += `<span class="inline-block w-3 h-3 mx-[1px] bg-white border border-indigo-300 rounded-[2px] shadow-sm align-middle"></span>`;
+                            }
+                            placeholder = `<span class="flex items-center justify-center">${boxes}</span>`;
+                        } else {
+                            placeholder = getChosung(token.text);
+                        }
+                    } else if (token.type === 'number') {
+                        // "그리고 숫자는 핑크 네모로 표현해줘"
+                        bgClass = "bg-pink-50 border-pink-200 text-pink-700 hover:bg-pink-100";
+                        let boxes = "";
+                        for(let i=0; i<token.text.length; i++) {
+                            boxes += `<span class="inline-block w-3 h-3 mx-[1px] bg-white border border-pink-300 rounded-[2px] shadow-sm align-middle"></span>`;
+                        }
+                        placeholder = `<span class="flex items-center justify-center">${boxes}</span>`;
+                    }
+
+                    wordHtml += `
+                        <span class="px-1.5 py-0.5 mx-0.5 rounded border ${bgClass} font-bold text-xs sm:text-sm cursor-pointer transition-all shadow-sm inline-flex items-center justify-center min-w-[24px]" 
+                              style="min-height: 24px;"
+                              onclick="revealToken(this, '${token.text}', '${token.type}', ${step})" 
+                              title="클릭하여 확인">
+                            ${placeholder}
+                        </span>
+                    `;
+                }
+            });
+
+            wordHtml += `</span>`;
+            return wordHtml;
+        }
+
+        // Click handler inside tokens to toggle revealed answers
+        window.revealToken = function(element, originalText, type, step) {
+            if (element.classList.contains('revealed')) {
+                element.classList.remove('revealed');
+                
+                // Revert back to masked states based on configuration rules
+                if (type === 'text') {
+                    element.className = "px-1.5 py-0.5 mx-0.5 rounded border bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100 font-bold text-xs sm:text-sm cursor-pointer transition-all shadow-sm inline-flex items-center justify-center min-w-[24px]";
+                    if (step === 5) {
+                        let boxes = "";
+                        for(let i=0; i<originalText.length; i++) {
+                            boxes += `<span class="inline-block w-3 h-3 mx-[1px] bg-white border border-indigo-300 rounded-[2px] shadow-sm align-middle"></span>`;
+                        }
+                        element.innerHTML = `<span class="flex items-center justify-center">${boxes}</span>`;
+                    } else {
+                        element.innerText = getChosung(originalText);
+                    }
+                } else if (type === 'number') {
+                    element.className = "px-1.5 py-0.5 mx-0.5 rounded border bg-pink-50 border-pink-200 text-pink-700 hover:bg-pink-100 font-bold text-xs sm:text-sm cursor-pointer transition-all shadow-sm inline-flex items-center justify-center min-w-[24px]";
+                    let boxes = "";
+                    for(let i=0; i<originalText.length; i++) {
+                        boxes += `<span class="inline-block w-3 h-3 mx-[1px] bg-white border border-pink-300 rounded-[2px] shadow-sm align-middle"></span>`;
+                    }
+                    element.innerHTML = `<span class="flex items-center justify-center">${boxes}</span>`;
+                }
+            } else {
+                // Reveal the content
+                element.classList.add('revealed');
+                if (type === 'text') {
+                    element.className = "revealed px-1.5 py-0.5 mx-0.5 rounded border bg-emerald-100 border-emerald-300 text-emerald-800 font-bold text-xs sm:text-sm cursor-pointer hover:bg-emerald-200 transition-all shadow-sm inline-flex items-center justify-center min-w-[24px]";
+                } else if (type === 'number') {
+                    element.className = "revealed px-1.5 py-0.5 mx-0.5 rounded border bg-pink-200 border-pink-400 text-pink-900 font-bold text-xs sm:text-sm cursor-pointer hover:bg-pink-300 transition-all shadow-sm inline-flex items-center justify-center min-w-[24px]";
+                }
+                element.innerText = originalText;
+            }
+        };
+
+        // Render Cards based on states
+        function renderCards() {
+            const container = document.getElementById("cardsContainer");
+            container.innerHTML = "";
+
+            const filteredData = STUDY_DATA.filter(item => {
+                if (currentCountry === "all") return true;
+                return item.country === currentCountry;
+            });
+
+            if (filteredData.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-slate-400">학습할 데이터가 없습니다.</div>`;
+                return;
+            }
+
+            // Group by category/theme to make it clean
+            const themes = ["읽기", "유형 분석", "사회 문제"];
+            
+            themes.forEach(theme => {
+                const themeItems = filteredData.filter(item => item.theme === theme);
+                if (themeItems.length === 0) return;
+
+                // Create category header
+                const themeSection = document.createElement("div");
+                themeSection.className = "flex flex-col gap-4";
+                themeSection.innerHTML = `
+                    <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mt-2">
+                        <span class="w-1.5 h-6 bg-indigo-600 rounded-full"></span>
+                        <h3 class="font-bold text-base text-slate-900">${theme}</h3>
+                    </div>
+                `;
+
+                const cardGrid = document.createElement("div");
+                cardGrid.className = "grid grid-cols-1 md:grid-cols-2 gap-4";
+
+                themeItems.forEach(item => {
+                    const isCompleted = completedCards.has(item.id);
+                    const cardDiv = document.createElement("div");
+                    cardDiv.className = `bg-white rounded-2xl border ${isCompleted ? 'border-emerald-200 bg-emerald-50/20' : 'border-slate-200'} p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 relative overflow-hidden`;
+                    cardDiv.id = `card-${item.id}`;
+
+                    // Country Tag Color
+                    let countryBadgeColor = "bg-amber-100 text-amber-800";
+                    if (item.country === "japan") countryBadgeColor = "bg-emerald-100 text-emerald-800";
+                    if (item.country === "saudi") countryBadgeColor = "bg-blue-100 text-blue-800";
+
+                    // Core learning sentences assembled word by word (tokenized inside)
+                    let sentenceHtml = "";
+                    item.words.forEach((word, index) => {
+                        sentenceHtml += createCardWordSpan(word, index, currentStep, item.id) + " ";
+                    });
+
+                    cardDiv.innerHTML = `
+                        <!-- Card Header -->
+                        <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded text-xs font-bold ${countryBadgeColor}">${item.countryKo}</span>
+                                <span class="text-xs font-semibold text-slate-400">[${item.code}]</span>
+                            </div>
+                            <button onclick="toggleCardComplete('${item.id}')" class="text-lg ${isCompleted ? 'text-emerald-500 hover:text-emerald-600' : 'text-slate-300 hover:text-slate-400'} transition-colors" title="외움 체크">
+                                <i class="${isCompleted ? 'fa-solid' : 'fa-regular'} fa-circle-check"></i>
+                            </button>
+                        </div>
+
+                        <!-- Card Body (Sentence Area) -->
+                        <div class="py-2">
+                            <!-- Study Interactive Sentence -->
+                            <div class="text-sm sm:text-base leading-relaxed text-slate-700 select-none flex flex-wrap items-center gap-y-2">
+                                ${sentenceHtml}
+                            </div>
+
+                            <!-- Testing input mode -->
+                            <div class="mt-4 pt-4 border-t border-slate-100 hidden" id="test-input-area-${item.id}">
+                                <label class="block text-xs font-bold text-slate-500 mb-1">문장 직접 쓰며 테스트하기:</label>
+                                <div class="flex gap-2">
+                                    <input type="text" 
+                                           id="input-${item.id}" 
+                                           placeholder="전체 문장을 작성하세요." 
+                                           class="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800"
+                                           onkeyup="checkInputValue('${item.id}', '${item.original}')"
+                                    />
+                                    <button onclick="checkTestResult('${item.id}', '${item.original}')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-xs font-semibold transition-colors shrink-0">
+                                        검사
+                                    </button>
+                                </div>
+                                <div id="test-feedback-${item.id}" class="mt-2 text-xs font-bold hidden"></div>
+                            </div>
+                        </div>
+
+                        <!-- Card Footer Controls -->
+                        <div class="flex items-center justify-between border-t border-slate-100 pt-3 mt-auto">
+                            <!-- Flip trigger button -->
+                            <button onclick="toggleCardFlip('${item.id}')" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors">
+                                <i class="fa-solid fa-eye"></i> <span id="btn-reveal-txt-${item.id}">정답 한눈에 보기</span>
+                            </button>
+                            <span class="text-[11px] text-slate-400 font-medium">카드를 눌러 개별 단어 확인 가능</span>
+                        </div>
+
+                        <!-- Answer Overlay (Absolute hide layer, flipped) -->
+                        <div id="overlay-${item.id}" class="absolute inset-0 bg-indigo-900/95 text-white p-5 flex flex-col justify-between transition-all duration-300 translate-y-full opacity-0 pointer-events-none z-10">
+                            <div>
+                                <div class="flex justify-between items-center mb-4">
+                                    <span class="text-xs font-bold text-indigo-200 bg-indigo-800 px-2 py-0.5 rounded-md">${item.countryKo} ${item.theme} [${item.code}]</span>
+                                    <button onclick="toggleCardFlip('${item.id}')" class="text-indigo-200 hover:text-white">
+                                        <i class="fa-solid fa-xmark text-lg"></i>
+                                    </button>
+                                </div>
+                                <p class="text-sm sm:text-base font-medium leading-relaxed bg-indigo-950/50 p-4 rounded-xl border border-indigo-700/50">
+                                    ${item.original}
+                                </p>
+                            </div>
+                            <div class="flex justify-between items-center border-t border-indigo-800/80 pt-3 mt-2">
+                                <span class="text-xs text-indigo-300"><i class="fa-solid fa-lightbulb"></i> 원본 텍스트 전체 제공</span>
+                                <button onclick="toggleCardFlip('${item.id}'); toggleCardComplete('${item.id}', true);" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-colors">
+                                    이해함 &amp; 외웠음!
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    cardGrid.appendChild(cardDiv);
+                });
+
+                themeSection.appendChild(cardGrid);
+                container.appendChild(themeSection);
+            });
+
+            // Re-apply Mode UI state
+            applyModeUI();
+            updateProgress();
+        }
+
+        // Toggle card flip overlay
+        window.toggleCardFlip = function(id) {
+            const overlay = document.getElementById(`overlay-${id}`);
+            const btnRevealTxt = document.getElementById(`btn-reveal-txt-${id}`);
+            if (overlay.classList.contains('translate-y-full')) {
+                overlay.classList.remove('translate-y-full', 'opacity-0', 'pointer-events-none');
+                if (btnRevealTxt) btnRevealTxt.innerText = "학습하기로 돌아가기";
+            } else {
+                overlay.classList.add('translate-y-full', 'opacity-0', 'pointer-events-none');
+                if (btnRevealTxt) btnRevealTxt.innerText = "정답 한눈에 보기";
+            }
+        };
+
+        // Complete/Learned Switch
+        window.toggleCardComplete = function(id, forceValue) {
+            const cardElement = document.getElementById(`card-${id}`);
+            const hasId = completedCards.has(id);
+            
+            if (forceValue === true || !hasId) {
+                completedCards.add(id);
+                if (cardElement) {
+                    cardElement.classList.add('border-emerald-200', 'bg-emerald-50/20');
+                }
+            } else {
+                completedCards.delete(id);
+                if (cardElement) {
+                    cardElement.classList.remove('border-emerald-200', 'bg-emerald-50/20');
+                }
+            }
+            saveStateToStorage();
+            updateProgress();
+            renderCards(); // Refresh display to sync icons
+        };
+
+        // Realtime typing check
+        window.checkInputValue = function(id, originalText) {
+            const inputVal = document.getElementById(`input-${id}`).value.trim();
+            const feedback = document.getElementById(`test-feedback-${id}`);
+            
+            // Clean strings (remove whitespace and special chars for soft comparison)
+            const cleanText = (str) => str.replace(/\s+/g, '').replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+            
+            if (cleanText(inputVal) === cleanText(originalText)) {
+                feedback.classList.remove('hidden', 'text-amber-600', 'text-red-500');
+                feedback.classList.add('text-emerald-600');
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check"></i> 완벽합니다! 일치합니다.`;
+                completedCards.add(id);
+                saveStateToStorage();
+                updateProgress();
+            } else {
+                feedback.classList.remove('hidden', 'text-emerald-600');
+                feedback.classList.add('text-amber-600');
+                feedback.innerHTML = `작성 중...`;
+            }
+        };
+
+        // Click to evaluate typing test
+        window.checkTestResult = function(id, originalText) {
+            const inputVal = document.getElementById(`input-${id}`).value.trim();
+            const feedback = document.getElementById(`test-feedback-${id}`);
+            
+            if (!inputVal) {
+                feedback.classList.remove('hidden', 'text-emerald-600', 'text-amber-600');
+                feedback.classList.add('text-red-500');
+                feedback.innerHTML = `답안을 작성하신 뒤 검사해 주세요.`;
+                return;
+            }
+
+            if (inputVal === originalText) {
+                feedback.classList.remove('hidden', 'text-amber-600', 'text-red-500');
+                feedback.classList.add('text-emerald-600');
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check"></i> 정밀 검사 통과! (완벽하게 한글자도 틀리지 않고 일치)`;
+                toggleCardComplete(id, true);
+            } else {
+                feedback.classList.remove('hidden', 'text-emerald-600', 'text-amber-600');
+                feedback.classList.add('text-red-500');
+                feedback.innerHTML = `
+                    <div class="flex flex-col gap-1">
+                        <span><i class="fa-solid fa-triangle-exclamation"></i> 오답이 있습니다.</span>
+                        <span class="text-[11px] text-slate-500">기대 답안: <strong class="text-indigo-950">${originalText}</strong></span>
+                    </div>
+                `;
+            }
+        };
+
+        // Switch to test mode visual elements
+        function applyModeUI() {
+            STUDY_DATA.forEach(item => {
+                const area = document.getElementById(`test-input-area-${item.id}`);
+                if (area) {
+                    if (currentMode === "test") {
+                        area.classList.remove('hidden');
+                    } else {
+                        area.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        // Global Rate Progress Updates
+        function updateProgress() {
+            const progressSpan = document.getElementById("globalProgress");
+            const totalCount = STUDY_DATA.length;
+            const learnedCount = completedCards.size;
+            const percentage = totalCount > 0 ? Math.round((learnedCount / totalCount) * 100) : 0;
+            
+            progressSpan.innerText = `${percentage}% (${learnedCount}/${totalCount} 문장)`;
+        }
+
+        // Step Config Description Handler
+        const STEP_DETAILS = {
+            1: {
+                title: "1단계: 초성 카드 비중 소량 (약 20%)",
+                desc: "기본 인구 핵심 명사 위주로 소량의 초성 카드가 제공됩니다. 기호(~, .)와 주어 국가명(인도, 일본, 사우디)은 상시 노출됩니다."
+            },
+            2: {
+                title: "2단계: 초성 카드 비중 보통 (약 50%)",
+                desc: "조금 더 깊은 키워드 및 상태 변화 특징까지 초성 힌트가 늘어납니다. 이미지의 피라미드 모습과 함께 의미를 연상하세요."
+            },
+            3: {
+                title: "3단계: 초성 카드 비중 많음 (약 80%)",
+                desc: "대다수의 주요 핵심 실질 용어가 모두 초성 힌트로 대체됩니다. 문장의 구조를 머릿속으로 직접 재조립하며 학습해 보세요."
+            },
+            4: {
+                title: "4단계: 조사와 어미를 제외한 모든 형태소 초성화 (100%)",
+                desc: "주어 국가명과 조사, 어미(~다, ~한다, ~되었다 등), 기호(~, .)를 제외한 전 단어의 실질 어근이 완벽하게 100% 초성 카드로 제공됩니다."
+            },
+            5: {
+                title: "5단계: 4단계 영역 완전 빈칸 카드화 (글자수 개별 슬롯 제공)",
+                desc: "힌트 초성마저 모두 가려진 빈칸(백지) 형태입니다! 단어의 글자수 크기만큼 슬롯이 보이며, 숫자는 핑크색 슬롯으로 분리 제공되어 직관적 유추가 가능합니다."
+            }
+        };
+
+        function setStep(stepNum) {
+            currentStep = parseInt(stepNum);
+            
+            // Adjust step button style classes
+            document.querySelectorAll(".step-btn").forEach(btn => {
+                const bStep = parseInt(btn.getAttribute("data-step"));
+                if (bStep === currentStep) {
+                    btn.className = "step-btn py-2.5 px-1 sm:px-3 text-xs sm:text-sm font-bold rounded-xl border-2 transition-all flex flex-col items-center gap-1 bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-100";
+                    const subtitle = btn.querySelector("span:last-child");
+                    if (subtitle) subtitle.className = "text-[9px] opacity-90 font-medium";
+                } else {
+                    btn.className = "step-btn py-2.5 px-1 sm:px-3 text-xs sm:text-sm font-bold rounded-xl border-2 transition-all flex flex-col items-center gap-1 bg-white border-slate-200 hover:border-slate-300 text-slate-700";
+                    const subtitle = btn.querySelector("span:last-child");
+                    if (subtitle) subtitle.className = "text-[9px] text-slate-500 font-medium";
+                }
+            });
+
+            // Update explanation block
+            const descConfig = STEP_DETAILS[currentStep];
+            document.getElementById("stepTitleText").innerText = descConfig.title;
+            document.getElementById("stepDetailText").innerText = descConfig.desc;
+
+            renderCards();
+        }
+
+        // Local Storage State Management
+        function saveStateToStorage() {
+            localStorage.setItem("pyramid_completed_cards", JSON.stringify([...completedCards]));
+        }
+
+        // Load State From Storage
+        function loadStateFromStorage() {
+            const saved = localStorage.getItem("pyramid_completed_cards");
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    completedCards = new Set(parsed);
+                } catch (e) {
+                    completedCards = new Set();
+                }
+            }
+        }
+
+        // Event Setup & Routing
+        document.addEventListener("DOMContentLoaded", () => {
+            loadStateFromStorage();
+
+            // Set Step Button listeners
+            document.querySelectorAll(".step-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const stepNum = btn.getAttribute("data-step");
+                    setStep(stepNum);
+                });
+            });
+
+            // Tab Filter Listeners
+            document.querySelectorAll(".country-tab").forEach(tab => {
+                tab.addEventListener("click", () => {
+                    // Visual Switch
+                    document.querySelectorAll(".country-tab").forEach(t => {
+                        t.className = "country-tab px-4 py-2 text-sm font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition-colors";
+                    });
+                    tab.className = "country-tab px-4 py-2 text-sm font-bold rounded-lg bg-indigo-50 text-indigo-700 transition-colors";
+
+                    currentCountry = tab.getAttribute("data-country");
+                    renderCards();
+                });
+            });
+
+            // Mode Selector Event
+            const studyBtn = document.getElementById("modeStudy");
+            const testBtn = document.getElementById("modeTest");
+
+            studyBtn.addEventListener("click", () => {
+                currentMode = "study";
+                studyBtn.className = "px-3 py-1.5 text-xs font-bold rounded bg-white text-slate-800 shadow-sm flex items-center gap-1.5 transition-all";
+                testBtn.className = "px-3 py-1.5 text-xs font-semibold rounded text-slate-600 flex items-center gap-1.5 transition-all";
+                renderCards();
+            });
+
+            testBtn.addEventListener("click", () => {
+                currentMode = "test";
+                testBtn.className = "px-3 py-1.5 text-xs font-bold rounded bg-white text-slate-800 shadow-sm flex items-center gap-1.5 transition-all";
+                studyBtn.className = "px-3 py-1.5 text-xs font-semibold rounded text-slate-600 flex items-center gap-1.5 transition-all";
+                renderCards();
+            });
+
+            // Reset Action
+            document.getElementById("btnResetAll").addEventListener("click", () => {
+                if (confirm("정말로 모든 암기 진도와 학습 이력을 초기화하고 처음부터 공부하시겠습니까?")) {
+                    completedCards.clear();
+                    saveStateToStorage();
+                    renderCards();
+                }
+            });
+
+            // Initialize App
+            setStep(1);
         });
-        
-        // 절간 휴식 간격 제공
-        totalDelay += 1.5;
-      });
-    }
-
-    // 음표 비주얼라이저 시각화 바 랜덤 조절 효과
-    function animateVisualizer() {
-      const bars = document.querySelectorAll('#visualizer-bars span');
-      bars.forEach(bar => {
-        const randomHeight = Math.floor(Math.random() * 24) + 12; // 12px ~ 36px
-        bar.style.height = `${randomHeight}px`;
-      });
-    }
-
-    // ------------------------------------------------------------
-    // 2. 탭 전환 제어 시스템
-    // ------------------------------------------------------------
-    function switchTab(tabId) {
-      // 오디오 강제 종료
-      stopSound();
-
-      // 모든 탭 콘텐츠 숨김
-      document.querySelectorAll('.tab-content').forEach(el => {
-        el.classList.remove('active');
-      });
-      // 대상 탭 표시
-      document.getElementById(`tab-${tabId}`).classList.add('active');
-
-      // 웹 네비게이션 탭 버튼 색상 변경
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('bg-blue-500', 'text-white', 'shadow-md');
-        btn.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-200');
-      });
-      document.getElementById(`btn-tab-${tabId}`).classList.add('bg-blue-500', 'text-white', 'shadow-md');
-      document.getElementById(`btn-tab-${tabId}`).classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-200');
-
-      // 모바일 퀵메뉴 버튼 색상 동기화
-      document.querySelectorAll('.mobile-nav-btn').forEach((btn, idx) => {
-        const ids = ['song', 'study', 'practice'];
-        if (ids[idx] === tabId) {
-          btn.classList.add('text-blue-500');
-          btn.classList.remove('text-gray-400');
-        } else {
-          btn.classList.remove('text-blue-500');
-          btn.classList.add('text-gray-400');
-        }
-      });
-    }
-
-    // ------------------------------------------------------------
-    // 3. 초성 퀴즈 공통 빌더 및 리액션 제어
-    // ------------------------------------------------------------
-    function buildChosungHTML(chosungArr) {
-      return chosungArr.map(ch => {
-        if (ch === ' ') {
-          return `<span class="w-2.5"></span>`;
-        }
-        return `<span class="char-box border border-emerald-400 bg-white text-emerald-600 font-extrabold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-md text-xs sm:text-sm transition-all duration-150 shadow-sm">
-          ${ch}
-        </span>`;
-      }).join('');
-    }
-
-    function buildWordHTML(word) {
-      return word.split('').map(char => {
-        if (char === ' ') {
-          return `<span class="w-2.5"></span>`;
-        }
-        return `<span class="char-box border border-emerald-500 bg-emerald-500 text-white font-extrabold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-md text-xs sm:text-sm transition-all duration-150 shadow-sm">
-          ${char}
-        </span>`;
-      }).join('');
-    }
-
-    function buildPracticeChosungHTML(chosungArr) {
-      return chosungArr.map(ch => {
-        if (ch === ' ') {
-          return `<span class="w-2.5"></span>`;
-        }
-        return `<span class="char-box border border-orange-400 bg-white text-orange-600 font-extrabold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-md text-xs sm:text-sm transition-all duration-150 shadow-sm">
-          ${ch}
-        </span>`;
-      }).join('');
-    }
-
-    function buildPracticeWordHTML(word) {
-      return word.split('').map(char => {
-        if (char === ' ') {
-          return `<span class="w-2.5"></span>`;
-        }
-        return `<span class="char-box border border-orange-500 bg-orange-500 text-white font-extrabold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-md text-xs sm:text-sm transition-all duration-150 shadow-sm">
-          ${char}
-        </span>`;
-      }).join('');
-    }
-
-    // 초성 칸 초기 세팅
-    function initBlanks() {
-      // 1. 단원 키워드 퀴즈 이니셜라이징
-      const studyBlanks = document.querySelectorAll('.word-blank');
-      studyBlanks.forEach(blank => {
-        const chosung = blank.getAttribute('data-chosung').split(',');
-        blank.innerHTML = buildChosungHTML(chosung);
-        blank.setAttribute('data-revealed', 'false');
-        
-        blank.onclick = function() {
-          toggleBlank(this);
-        };
-      });
-
-      // 2. 실전 연습 퀴즈 이니셜라이징
-      const practiceBlanks = document.querySelectorAll('.practice-blank');
-      practiceBlanks.forEach(blank => {
-        const chosung = blank.getAttribute('data-chosung').split(',');
-        blank.innerHTML = buildPracticeChosungHTML(chosung);
-        blank.setAttribute('data-revealed', 'false');
-        
-        blank.onclick = function() {
-          togglePracticeBlank(this);
-        };
-      });
-    }
-
-    // [단원 키워드 퀴즈] 단어 보이기/가리기 토글
-    function toggleBlank(element) {
-      const isRevealed = element.getAttribute('data-revealed') === 'true';
-      const word = element.getAttribute('data-word');
-      const chosung = element.getAttribute('data-chosung').split(',');
-
-      if (isRevealed) {
-        element.innerHTML = buildChosungHTML(chosung);
-        element.setAttribute('data-revealed', 'false');
-        // 오답/리셋 스타일 피드백 효과음 (낮은 도)
-        audioCtx.resume();
-        playNote(52, 0.05, audioCtx.currentTime);
-      } else {
-        element.innerHTML = buildWordHTML(word);
-        element.setAttribute('data-revealed', 'true');
-        // 정답 정밀 연주 효과음 (도-미)
-        audioCtx.resume();
-        playNote(60, 0.05, audioCtx.currentTime);
-        setTimeout(() => playNote(64, 0.08, audioCtx.currentTime), 60);
-      }
-    }
-
-    // [실전 연습 퀴즈] 단어 보이기/가리기 토글
-    function togglePracticeBlank(element) {
-      const isRevealed = element.getAttribute('data-revealed') === 'true';
-      const word = element.getAttribute('data-word');
-      const chosung = element.getAttribute('data-chosung').split(',');
-
-      if (isRevealed) {
-        element.innerHTML = buildPracticeChosungHTML(chosung);
-        element.setAttribute('data-revealed', 'false');
-        // 오답/리셋 스타일 피드백 효과음 (낮은 도)
-        audioCtx.resume();
-        playNote(52, 0.05, audioCtx.currentTime);
-      } else {
-        element.innerHTML = buildPracticeWordHTML(word);
-        element.setAttribute('data-revealed', 'true');
-        // 정답 정밀 연주 효과음 (파-라)
-        audioCtx.resume();
-        playNote(65, 0.05, audioCtx.currentTime);
-        setTimeout(() => playNote(69, 0.08, audioCtx.currentTime), 60);
-      }
-    }
-
-    // [단원 키워드] 전체 정답 펼치기
-    function revealAllBlanks() {
-      const blanks = document.querySelectorAll('.word-blank');
-      blanks.forEach(blank => {
-        const word = blank.getAttribute('data-word');
-        blank.innerHTML = buildWordHTML(word);
-        blank.setAttribute('data-revealed', 'true');
-      });
-      // 정답 아르페지오 사운드
-      audioCtx.resume();
-      playNote(60, 0.05, audioCtx.currentTime);
-      setTimeout(() => playNote(64, 0.05, audioCtx.currentTime), 60);
-      setTimeout(() => playNote(67, 0.1, audioCtx.currentTime), 120);
-    }
-
-    // [단원 키워드] 전체 초성으로 리셋
-    function hideAllBlanks() {
-      const blanks = document.querySelectorAll('.word-blank');
-      blanks.forEach(blank => {
-        const chosung = blank.getAttribute('data-chosung').split(',');
-        blank.innerHTML = buildChosungHTML(chosung);
-        blank.setAttribute('data-revealed', 'false');
-      });
-      // 리셋 사운드
-      audioCtx.resume();
-      playNote(48, 0.15, audioCtx.currentTime);
-    }
-
-    // [실전 연습] 전체 정답 펼치기
-    function revealAllPractice() {
-      const blanks = document.querySelectorAll('.practice-blank');
-      blanks.forEach(blank => {
-        const word = blank.getAttribute('data-word');
-        blank.innerHTML = buildPracticeWordHTML(word);
-        blank.setAttribute('data-revealed', 'true');
-      });
-      // 정답 아르페지오 사운드
-      audioCtx.resume();
-      playNote(65, 0.05, audioCtx.currentTime);
-      setTimeout(() => playNote(69, 0.05, audioCtx.currentTime), 60);
-      setTimeout(() => playNote(72, 0.1, audioCtx.currentTime), 120);
-    }
-
-    // [실전 연습] 전체 초성으로 리셋
-    function hideAllPractice() {
-      const blanks = document.querySelectorAll('.practice-blank');
-      blanks.forEach(blank => {
-        const chosung = blank.getAttribute('data-chosung').split(',');
-        blank.innerHTML = buildPracticeChosungHTML(chosung);
-        blank.setAttribute('data-revealed', 'false');
-      });
-      // 리셋 사운드
-      audioCtx.resume();
-      playNote(53, 0.15, audioCtx.currentTime);
-    }
-
-    // 페이지 로딩 완료 후 실행
-    window.onload = function() {
-      initBlanks();
-    }
-  </script>
+    </script>
 </body>
 </html>
